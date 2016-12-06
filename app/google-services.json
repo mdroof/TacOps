@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "449986085284",
+    "firebase_url": "https://tacops.firebaseio.com",
+    "project_id": "firebase-tacops",
+    "storage_bucket": "firebase-tacops.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449986085284:android:03efdf91be47984f",
+        "android_client_info": {
+          "package_name": "edu.svsu.tacops.tacops"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449986085284-2qm326bgjhfllgt0jk3f0ktlkggb33ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATXDNEiFw6hnpL4r-ZtFO65U50k9vf3Zc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
