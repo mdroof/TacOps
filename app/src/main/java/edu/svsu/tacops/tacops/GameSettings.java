@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +34,7 @@ public class GameSettings extends AppCompatActivity {
     EditText time_limit_edittext;
     EditText score_limit_edittext;
     EditText max_clients_edittext;
+    Button done_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,15 @@ public class GameSettings extends AppCompatActivity {
         time_limit_edittext = (EditText) findViewById(R.id.time_limit_edittext);
         score_limit_edittext = (EditText) findViewById(R.id.score_limit_edittext);
         max_clients_edittext = (EditText) findViewById(R.id.max_clients_edittext);
+        done_button = (Button) findViewById(R.id.done_button);
+
+        done_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Toast.makeText(v.getContext(), "Settings Saved",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void writeGame(){

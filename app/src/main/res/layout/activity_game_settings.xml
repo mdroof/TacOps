@@ -57,7 +57,7 @@
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/password_edittext"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -138,7 +138,14 @@
             android:layout_column="1" />
     </GridLayout>
 
-
+    <Button
+        android:text="Done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/done_button" />
 
 
 </RelativeLayout>
