@@ -17,8 +17,7 @@
         android:id="@+id/create_game_button"
         android:layout_alignBottom="@+id/join_game_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="71dp"
-        android:onClick="createGameIntent (MainMenu)" />
+        android:layout_marginBottom="71dp" />
 
     <Button
         android:text="Join Game"
@@ -38,9 +37,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/settings_button"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/join_game_button"
-        android:layout_alignEnd="@+id/join_game_button"
         android:layout_alignLeft="@+id/join_game_button"
-        android:layout_alignStart="@+id/join_game_button" />
+        android:layout_alignStart="@+id/join_game_button"
+        android:layout_alignRight="@+id/join_game_button"
+        android:layout_alignEnd="@+id/join_game_button" />
 
 </RelativeLayout>
