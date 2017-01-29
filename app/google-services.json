@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "449986085284-c11rps9247hf7gp62oitslc18dovi82i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.svsu.tacops.tacops",
+            "certificate_hash": "3771A8F4841934F8923982192D0F0394AD54D7F2"
+          }
+        },
+        {
+          "client_id": "449986085284-qkrd0vr2bji5h5or14b4tn01mi1en7dr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.svsu.tacops.tacops",
+            "certificate_hash": "BEDCA77A869EEDDCE18F9A0800CE39683A9087C2"
+          }
+        },
+        {
+          "client_id": "449986085284-57vep0fof5vglqd5sq78e131ac162oal.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.svsu.tacops.tacops",
+            "certificate_hash": "0B9C33159AF23610E7E7FF2DCC8F3A3E47FC5FF2"
+          }
+        },
+        {
           "client_id": "449986085284-2qm326bgjhfllgt0jk3f0ktlkggb33ba.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +53,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449986085284-2qm326bgjhfllgt0jk3f0ktlkggb33ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -11,41 +11,42 @@
     tools:context="edu.svsu.tacops.tacops.GameSettings">
 
     <TextView
+        android:id="@+id/textView"
         android:text="Mission:"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView"
-        android:textSize="18sp" />
+        android:layout_alignParentStart="true" />
 
     <Spinner
+        android:id="@+id/mission_type_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mission_type_spinner"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/password_textview"
+        android:layout_toRightOf="@+id/password_textview"
         android:layout_alignLeft="@+id/password_edittext"
         android:layout_alignStart="@+id/password_edittext" />
 
     <TextView
+        android:id="@+id/password_textview"
         android:text="Password:"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/password_textview"
-        android:textSize="18sp"
         android:layout_alignBaseline="@+id/password_edittext"
         android:layout_alignBottom="@+id/password_edittext"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
+        android:id="@+id/password_edittext"
+        android:ems="10"
+        android:inputType="numberPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
-        android:ems="10"
-        android:id="@+id/password_edittext"
         android:layout_below="@+id/mission_type_spinner"
         android:layout_toRightOf="@+id/password_textview"
         android:layout_marginLeft="13dp"
@@ -56,32 +57,32 @@
         android:singleLine="true" />
 
     <GridLayout
+        android:id="@+id/mission_settings_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password_edittext"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/mission_settings_layout"
         android:columnCount="2"
-        android:rowCount="3">
+        android:rowCount="4">
 
         <TextView
+            android:id="@+id/time_limit_textview"
             android:text="Time Limit:"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/time_limit_textview"
-            android:textSize="18sp"
             android:layout_alignBaseline="@+id/password_edittext"
             android:layout_alignBottom="@+id/password_edittext"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <TextView
+            android:id="@+id/score_limit_textview"
             android:text="Score Limit:"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/score_limit_textview"
-            android:textSize="18sp"
             android:layout_alignBaseline="@+id/password_edittext"
             android:layout_alignBottom="@+id/password_edittext"
             android:layout_alignParentLeft="true"
@@ -90,11 +91,11 @@
             android:layout_column="0" />
 
         <TextView
+            android:id="@+id/max_clients_textview"
             android:text="Max Clients:"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/max_clients_textview"
-            android:textSize="18sp"
             android:layout_alignBaseline="@+id/password_edittext"
             android:layout_alignBottom="@+id/password_edittext"
             android:layout_alignParentLeft="true"
@@ -102,50 +103,101 @@
             android:layout_row="2"
             android:layout_column="0" />
 
-
-        <EditText
+        <TextView
+            android:id="@+id/team_quanity_textview"
+            android:text="Team Quantity:"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="time"
+            android:layout_alignBaseline="@+id/password_edittext"
+            android:layout_alignBottom="@+id/password_edittext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_row="3"
+            android:layout_column="0" />
+
+        <EditText
+            android:id="@+id/time_limit_edittext"
             android:ems="10"
+            android:inputType="time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/time_limit_edittext"
             android:layout_row="0"
             android:layout_column="1" />
 
         <EditText
+            android:id="@+id/score_limit_edittext"
+            android:ems="10"
+            android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/score_limit_edittext" />
+            android:layout_row="1"
+            android:layout_column="1"
+            />
 
         <EditText
+            android:id="@+id/max_clients_edittext"
+            android:ems="10"
+            android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/max_clients_edittext"
             android:layout_row="2"
             android:layout_column="1" />
+
+        <EditText
+            android:id="@+id/team_quantity_edittext"
+            android:ems="10"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_row="3"
+            android:layout_column="1"
+            />
     </GridLayout>
 
     <Button
+        android:id="@+id/done_button"
         android:text="Done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/done_button" />
+        />
+
+    <TextView
+        android:id="@+id/description_textview"
+        android:text="Description:"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/mission_settings_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/missionDescription_textview"
+        android:text="DescriptionText:"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/description_textview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

@@ -9,18 +9,29 @@ import java.util.List;
 public class Game {
 
     //Class member data
-    String description;
-    String name;
-    String game_id;
-    String password;
+   private String description;
+   private String name;
+   private String game_id;
+   private String password;
 
-    int teamQuantity;
-    int max_players;
-    int score_limit;
-    double time_limit;
+   private int teamQuantity;
+   private int max_players;
+   private int score_limit;
+   private double time_limit;
     List<Alert> alert_log;
 
     public Game() {
+    }
+
+    public Game(String description, String name, String game_id,
+                int teamQuantity, int max_players, int score_limit, double time_limit) {
+        this.description = description;
+        this.name = name;
+        this. game_id = game_id;
+        this.teamQuantity = teamQuantity;
+        this.max_players = max_players;
+        this.score_limit = score_limit;
+        this.time_limit = time_limit;
     }
 
     public String getDescription() {

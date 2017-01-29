@@ -3,6 +3,7 @@ package edu.svsu.tacops.tacops;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tacops.Game;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,9 @@ public class GameSettings extends AppCompatActivity {
     EditText time_limit_edittext;
     EditText score_limit_edittext;
     EditText max_clients_edittext;
+    EditText team_quantity_edittext;
+    TextView description_textview;
+    TextView missionDescription_textview;
     Button done_button;
 
     @Override
@@ -43,7 +49,9 @@ public class GameSettings extends AppCompatActivity {
 
         //Set Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Uncomment to re-write the default game settings
         //writeGame();
+
         setupDataListeners();
         //Set Title on Activity
         //setTitle("Game Settings");
@@ -62,37 +70,96 @@ public class GameSettings extends AppCompatActivity {
         time_limit_edittext = (EditText) findViewById(R.id.time_limit_edittext);
         score_limit_edittext = (EditText) findViewById(R.id.score_limit_edittext);
         max_clients_edittext = (EditText) findViewById(R.id.max_clients_edittext);
-        done_button = (Button) findViewById(R.id.done_button);
+        team_quantity_edittext = (EditText) findViewById(R.id.team_quantity_edittext);
+        description_textview = (TextView) findViewById(R.id.description_textview);
+        missionDescription_textview = (TextView) findViewById(R.id.missionDescription_textview);
+        done_button = (Button)findViewById(R.id.done_button);
 
+        // Saves new game settings and transfers control to game lobby
         done_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
+
+                chooseMissionSettings();
+                // Save to firebase
+
                 Toast.makeText(v.getContext(), "Settings Saved",
                         Toast.LENGTH_SHORT).show();
+
+                // Transfer control to game lobby
+
+
             }
         });
-    }
+    } // End onCreate
 
+    // Creates the default game settings to be added to Firebase later
+    // Run once to re-create Tacops games
     private void writeGame(){
         Game game = new Game();
-        game.setDescription("Opposing teams attempt to capture their enemies while defending their own flag.");
+        Map<String, Game> missions = new HashMap<>();
+
+        //Capture the Flag
+        game.setDescription("Opposing teams attempt to capture their enemies flag while defending their own flag.");
         game.setGame_id("b08cc26548aee0bff438c252deea3ff7");
         game.setName("Capture the Flag");
         game.setScore_limit(3);
         game.setTime_limit(20.00);
-        Map<String, Game> missions = new HashMap<String, Game>();
-        missions.put("ctf", game);
-
-        game.setDescription("Opposing teams attempt to capture and defend strategic locations to gain points for their team.");
-        game.setGame_id("5d64d34bcc4f53b9102de956debe2702");
-        game.setName("Domination");
-        game.setScore_limit(300);
-        game.setTime_limit(15.00);
-
-        missions.put("dom", game);
+        game.setMax_players(16);
+        game.setTeamQuantity(2);
+        //missions.put("ctf", game);
+        missions.put("Capture the Flag", game);
         mDatabase.child("missions").setValue(missions);
 
+        Game game2 = new Game();
+
+        // Domination
+        game2.setDescription("Opposing teams attempt to capture and defend strategic locations to gain points for their team.");
+        game2.setGame_id("5d64d34bcc4f53b9102de956debe2702");
+        game2.setName("Domination");
+        game2.setScore_limit(300);
+        game2.setTime_limit(15.00);
+        game2.setMax_players(16);
+        game2.setTeamQuantity(2);
+        //missions.put("dom", game2);
+        missions.put("Domination", game2);
+        mDatabase.child("missions").setValue(missions);
+    } // End writeGame
+
+    // Sets the new mission settings that the referee chooses
+    private void chooseMissionSettings() {
+        Game game = new Game();
+
+        //Set mission
+        Spinner missionTypeSpinner = (Spinner)findViewById(R.id.mission_type_spinner);
+        String missionType = missionTypeSpinner.getSelectedItem().toString();
+        game.setName(missionType);
+
+        //Set password
+        EditText password = (EditText)findViewById(R.id.password_edittext);
+        game.setPassword(password.getText().toString());
+
+        //Set time_limit
+        EditText timeLimit = (EditText)findViewById(R.id.time_limit_edittext);  // Get
+        Double time_limit = Double.parseDouble(timeLimit.getText().toString()); // Cast
+        game.setTime_limit(time_limit);                                         // Set
+
+        // Set score_limit
+        EditText scoreLimit = (EditText)findViewById(R.id.score_limit_edittext);
+        Integer score_limit = Integer.parseInt(scoreLimit.getText().toString());
+        game.setScore_limit(score_limit);
+
+        // Set team_quanity
+        EditText teamQuantity = (EditText)findViewById(R.id.team_quantity_edittext);
+        Integer team_quantity = Integer.parseInt(teamQuantity.getText().toString());
+        game.setScore_limit(team_quantity);
+
+        // Set max_players
+        EditText maxPlayers = (EditText)findViewById(R.id.max_clients_edittext);
+        int max_players = Integer.parseInt(maxPlayers.getText().toString());
+        game.setMax_players(max_players);
     }
+
     private void setupDataListeners(){
         mission_spinner = (Spinner)findViewById(R.id.mission_type_spinner);
 
@@ -108,13 +175,10 @@ public class GameSettings extends AppCompatActivity {
                         String areaName = typeSnapshot.child("name").getValue(String.class);
                         mission_types.add(areaName);
                     }
-
                 }
-
                 ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
                 areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mission_spinner.setAdapter(areasAdapter);
-
             }
 
             @Override
@@ -123,16 +187,20 @@ public class GameSettings extends AppCompatActivity {
             }
         });
 
-    }
+    } // End setupDataListeners
+
+    // Retrieve Default settings from Firebase for selected mission
     private void retrieveMissionData(){
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String key = mission_spinner.getSelectedItem().toString();
-                Game game = dataSnapshot.child("missions").child("ctf").getValue(Game.class);
+                Game game = dataSnapshot.child("missions").child(key).getValue(Game.class);
                 time_limit_edittext.setText(Double.toString(game.getTime_limit()));
-                score_limit_edittext.setText(Double.toString(game.getScore_limit()));
+                score_limit_edittext.setText(Integer.toString(game.getScore_limit()));
                 max_clients_edittext.setText(Integer.toString(game.getMax_players()));
+                team_quantity_edittext.setText(Integer.toString(game.getTeamQuantity()));
+                missionDescription_textview.setText(game.getDescription());
             }
 
             @Override
@@ -140,7 +208,7 @@ public class GameSettings extends AppCompatActivity {
 
             }
         });
-    }
+    } // End retrieveMissionData
 
 
-}
+} // End GameSettings
