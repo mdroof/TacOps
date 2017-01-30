@@ -50,7 +50,7 @@ public class GameSettings extends AppCompatActivity {
         //Set Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // Uncomment to re-write the default game settings
-        //writeGame();
+        // writeGame();
 
         setupDataListeners();
         //Set Title on Activity
@@ -80,14 +80,12 @@ public class GameSettings extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
 
+                // Creates new game on firebase with desired settings
                 chooseMissionSettings();
-                // Save to firebase
-
                 Toast.makeText(v.getContext(), "Settings Saved",
                         Toast.LENGTH_SHORT).show();
 
                 // Transfer control to game lobby
-
 
             }
         });
@@ -124,6 +122,7 @@ public class GameSettings extends AppCompatActivity {
         //missions.put("dom", game2);
         missions.put("Domination", game2);
         mDatabase.child("missions").setValue(missions);
+
     } // End writeGame
 
     // Sets the new mission settings that the referee chooses
@@ -158,6 +157,17 @@ public class GameSettings extends AppCompatActivity {
         EditText maxPlayers = (EditText)findViewById(R.id.max_clients_edittext);
         int max_players = Integer.parseInt(maxPlayers.getText().toString());
         game.setMax_players(max_players);
+
+        // Setting unique game_id
+        String key = mDatabase.child("game_list").push().getKey();
+        game.setGame_id(key);
+        String game_id = game.getGame_id();
+
+        // Creating game and adding to game list with settings defined above
+        // Does not overwrite the game_list
+        Map<String, Object> games = new HashMap<>();
+        games.put("/game_list/" + game_id, game);
+        mDatabase.updateChildren(games);
     }
 
     private void setupDataListeners(){

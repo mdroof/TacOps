@@ -27,7 +27,7 @@ public class Game {
                 int teamQuantity, int max_players, int score_limit, double time_limit) {
         this.description = description;
         this.name = name;
-        this. game_id = game_id;
+        this.game_id = game_id;
         this.teamQuantity = teamQuantity;
         this.max_players = max_players;
         this.score_limit = score_limit;
