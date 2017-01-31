@@ -24,7 +24,8 @@
         android:layout_below="@+id/sign_in_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:id="@+id/status" />
+        android:id="@+id/status"
+        android:visibility="invisible" />
 
     <Button
         android:text="Sign Out"
@@ -33,7 +34,8 @@
         android:layout_below="@+id/status"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:id="@+id/sign_out_button" />
+        android:id="@+id/sign_out_button"
+        android:visibility="invisible" />
 
     <Button
         android:text="Disconnect"
@@ -43,7 +45,8 @@
         android:layout_alignLeft="@+id/sign_out_button"
         android:layout_alignStart="@+id/sign_out_button"
         android:layout_marginTop="16dp"
-        android:id="@+id/disconnect_button" />
+        android:id="@+id/disconnect_button"
+        android:visibility="invisible" />
 
     <Button
         android:text="Sign Out and Disconnect"
@@ -52,7 +55,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/disconnect_button"
         android:layout_alignStart="@+id/disconnect_button"
-        android:id="@+id/sign_out_and_disconnect" />
+        android:id="@+id/sign_out_and_disconnect"
+        android:visibility="invisible" />
 
     <TextView
         android:text="Details"
@@ -61,6 +65,7 @@
         android:layout_above="@+id/sign_in_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="77dp"
-        android:id="@+id/detail" />
+        android:id="@+id/detail"
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -42,4 +42,12 @@
         android:layout_alignRight="@+id/join_game_button"
         android:layout_alignEnd="@+id/join_game_button" />
 
+    <Button
+        android:text="Sign Out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/sign_out" />
+
 </RelativeLayout>
