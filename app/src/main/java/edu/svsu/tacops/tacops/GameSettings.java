@@ -86,6 +86,8 @@ public class GameSettings extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
 
                 // Transfer control to game lobby
+                Intent intent = new Intent(v.getContext(), GameLobby.class);
+                startActivity(intent);
 
             }
         });
@@ -172,23 +174,30 @@ public class GameSettings extends AppCompatActivity {
 
     private void setupDataListeners(){
         mission_spinner = (Spinner)findViewById(R.id.mission_type_spinner);
+        //final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //DatabaseReference ref = database.getReference("tacops/missions");
 
+        //ref.addListenerForSingleValueEvent(new ValueEventListener() {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final List<String> mission_types = new ArrayList<String>();
+                String missionName1 = "";
 
                 for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
                     for(DataSnapshot typeSnapshot: missionSnapshot.getChildren()){
-                        int z = 0;
-                        //String areaName = missionSnapshot.child("name").getValue(String.class);
-                        String areaName = typeSnapshot.child("name").getValue(String.class);
-                        mission_types.add(areaName);
+                        //int z = 0;
+                         //missionName1 = missionSnapshot.child("name").getValue(String.class);
+                        String missionName = typeSnapshot.child("name").getValue(String.class);
+                        mission_types.add(missionName);
+                       System.out.println(missionName);
                     }
+                    //System.out.println(missionName1);
                 }
-                ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
-                areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mission_spinner.setAdapter(areasAdapter);
+                // Populate the mission_spinner with mission_types
+                ArrayAdapter<String> missionAdapter = new ArrayAdapter<String>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
+                missionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mission_spinner.setAdapter(missionAdapter);
             }
 
             @Override
