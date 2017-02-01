@@ -37,7 +37,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/done_button"
+        android:id="@+id/start_button"
         android:text="Start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

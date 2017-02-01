@@ -91,10 +91,8 @@ public class MainMenu extends AppCompatActivity implements GoogleApiClient.OnCon
         join_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                /*
-                Intent intent = new Intent(v.getContext(), GameSettings.class);
+                Intent intent = new Intent(v.getContext(), JoinGame.class);
                 startActivity(intent);
-                */
             }
         });
 

@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <ExpandableListView android:id="@+id/list_of_games"
+    <ListView android:id="@+id/list_of_games"
         android:layout_width="match_parent"
         android:layout_height="@android:dimen/thumbnail_height"
         android:padding="5dp"

@@ -1,9 +1,12 @@
 package edu.svsu.tacops.tacops;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +20,7 @@ public class GameLobby extends AppCompatActivity {
 
     private ListView player_list_listView;
     private ListView team_list_listView;
+    private Button start_game_button;
 
     // Profile data to be made into separate class later
     private String providerId ="";
@@ -58,6 +62,16 @@ public class GameLobby extends AppCompatActivity {
 
         getProviderData();
         player_list.add(name);
+
+        start_game_button = (Button) findViewById(R.id.start_button);
+
+        start_game_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent intent = new Intent(v.getContext(), GameScreen.class);
+                startActivity(intent);
+            }
+        });
 
     } // End onCreate
 
