@@ -28,7 +28,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".GameSettings" />
-        <activity android:name=".GameLobby"></activity>
+        <activity android:name=".GameLobby" />
+        <activity android:name=".GameScreen"></activity>
     </application>
 
 </manifest>
