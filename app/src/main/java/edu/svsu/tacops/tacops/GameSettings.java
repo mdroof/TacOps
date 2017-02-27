@@ -1,6 +1,7 @@
 package edu.svsu.tacops.tacops;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -81,12 +82,14 @@ public class GameSettings extends AppCompatActivity {
                 // Perform action on click
 
                 // Creates new game on firebase with desired settings
-                chooseMissionSettings();
+                Game game = new Game();
+                game = createGame();
                 Toast.makeText(v.getContext(), "Settings Saved",
                         Toast.LENGTH_SHORT).show();
 
                 // Transfer control to game lobby
                 Intent intent = new Intent(v.getContext(), GameLobby.class);
+                intent.putExtra("game", game);
                 startActivity(intent);
 
             }
@@ -94,7 +97,7 @@ public class GameSettings extends AppCompatActivity {
     } // End onCreate
 
     // Creates the default game settings to be added to Firebase later
-    // Run once to re-create Tacops games
+    // Run once to re-create TacOps games
     private void writeGame(){
         Game game = new Game();
         Map<String, Game> missions = new HashMap<>();
@@ -127,8 +130,8 @@ public class GameSettings extends AppCompatActivity {
 
     } // End writeGame
 
-    // Sets the new mission settings that the referee chooses
-    private void chooseMissionSettings() {
+    // Sets new game settings, saves to database, and returns the game
+    private Game createGame() {
         Game game = new Game();
 
         //Set mission
@@ -150,15 +153,15 @@ public class GameSettings extends AppCompatActivity {
         Integer score_limit = Integer.parseInt(scoreLimit.getText().toString());
         game.setScore_limit(score_limit);
 
-        // Set team_quanity
-        EditText teamQuantity = (EditText)findViewById(R.id.team_quantity_edittext);
-        Integer team_quantity = Integer.parseInt(teamQuantity.getText().toString());
-        game.setScore_limit(team_quantity);
-
         // Set max_players
         EditText maxPlayers = (EditText)findViewById(R.id.max_clients_edittext);
         int max_players = Integer.parseInt(maxPlayers.getText().toString());
         game.setMax_players(max_players);
+
+        // Set team_quanity
+        EditText teamQuantity = (EditText)findViewById(R.id.team_quantity_edittext);
+        Integer team_quantity = Integer.parseInt(teamQuantity.getText().toString());
+        game.setTeamQuantity(team_quantity);
 
         // Setting unique game_id
         String key = mDatabase.child("game_list").push().getKey();
@@ -170,19 +173,23 @@ public class GameSettings extends AppCompatActivity {
         Map<String, Object> games = new HashMap<>();
         games.put("/game_list/" + game_id, game);
         mDatabase.updateChildren(games);
+        return game;
     }
 
     private void setupDataListeners(){
         mission_spinner = (Spinner)findViewById(R.id.mission_type_spinner);
-        //final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //DatabaseReference ref = database.getReference("tacops/missions");
 
-        //ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        //mDatabase.addValueEventListener(new ValueEventListener() {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> mission_types = new ArrayList<String>();
+                final List<String> mission_types = new ArrayList<>();
                 String missionName1 = "";
+
+                /*for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
+                    String missionName = missionSnapshot.child("missions").getValue(String.class);
+                    mission_types.add(missionName);
+                }*/
 
                 for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
                     for(DataSnapshot typeSnapshot: missionSnapshot.getChildren()){
@@ -195,7 +202,7 @@ public class GameSettings extends AppCompatActivity {
                     //System.out.println(missionName1);
                 }
                 // Populate the mission_spinner with mission_types
-                ArrayAdapter<String> missionAdapter = new ArrayAdapter<String>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
+                ArrayAdapter<String> missionAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
                 missionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mission_spinner.setAdapter(missionAdapter);
             }
@@ -215,6 +222,7 @@ public class GameSettings extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String key = mission_spinner.getSelectedItem().toString();
                 Game game = dataSnapshot.child("missions").child(key).getValue(Game.class);
+                time_limit_edittext.setText(Double.toString(game.getTime_limit()));
                 time_limit_edittext.setText(Double.toString(game.getTime_limit()));
                 score_limit_edittext.setText(Integer.toString(game.getScore_limit()));
                 max_clients_edittext.setText(Integer.toString(game.getMax_players()));

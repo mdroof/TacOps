@@ -1,12 +1,13 @@
 package com.tacops;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Topgun on 12/7/2016.
  */
-
-public class Game {
+@SuppressWarnings("serial") //With this annotation we hide compiler warnings
+public class Game implements Serializable{
 
     //Class member data
    private String description;
@@ -18,7 +19,7 @@ public class Game {
    private int max_players;
    private int score_limit;
    private double time_limit;
-    List<Alert> alert_log;
+   private List<Alert> alert_log;
 
     public Game() {
     }
@@ -105,4 +106,5 @@ public class Game {
     public void setAlert_log(List<Alert> alert_log) {
         this.alert_log = alert_log;
     }
-}
+
+} // End Game Class

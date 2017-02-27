@@ -8,33 +8,24 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="edu.svsu.tacops.tacops.GameLobby">
 
-    <LinearLayout
-        android:id="@+id/mission_settings_layout"
+    <TextView
+        android:id="@+id/game_title"
+        android:text="Game Id Here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
-
-        <!-- android:entries="playerListArray" -->
-    <ListView
-        android:id="@+id/player_list_listView"
-        android:layout_width="0dp"
-        android:layout_weight="0.70"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/done_button"
-        android:layout_alignParentLeft="true" />
+        android:textAlignment="center"
+        android:layout_alignParentTop="true" />
 
     <ListView
-        android:id="@+id/team_list_listView"
-        android:layout_width="0dp"
-        android:layout_weight="0.30"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/done_button"
-        android:layout_alignParentRight="true" />
-    </LinearLayout>
+        android:id="@+id/player_list"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_above="@+id/start_button"
+        android:layout_below="@+id/game_title"
+        android:dividerHeight="1dp" />
 
     <Button
         android:id="@+id/start_button"
@@ -46,3 +37,4 @@
         android:layout_alignParentStart="true"
         />
 </RelativeLayout>
+

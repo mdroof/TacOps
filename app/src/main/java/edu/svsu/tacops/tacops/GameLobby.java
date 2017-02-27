@@ -5,63 +5,77 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tacops.Client;
+import com.tacops.Game;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameLobby extends AppCompatActivity {
 
-    private ListView player_list_listView;
-    private ListView team_list_listView;
+    private DatabaseReference mDatabase;
+    private TextView game_title_view;
     private Button start_game_button;
-
-    // Profile data to be made into separate class later
-    private String providerId ="";
-    private String uid = "";
-    private String name = "";
-    private String email = "";
-    private Uri photoUrl;
+    static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_lobby);
 
-        player_list_listView = (ListView) findViewById(R.id.player_list_listView);
-        team_list_listView = (ListView) findViewById(R.id.team_list_listView);
+        //Set Firebase reference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //Instanciating the player_list array with dummy data
-        List<String> player_list = new ArrayList<>();
-        player_list.add("Player1");
-        player_list.add("Player2");
+        game_title_view = (TextView) findViewById(R.id.game_title);
 
-        //Instanciating the team_list array with dummy data
-        List<String> team_list = new ArrayList<>();
-        team_list.add("Team1");
-        team_list.add("Team2");
-        team_list.add("Team1");
+        // Getting the current game passed from GameSettings
+        Intent intent = getIntent();
+        Game currentGame = (Game)intent.getSerializableExtra("game");
+        game_title_view.setText("Game ID: " + currentGame.getGame_id());
 
-        //Player list adapter
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, player_list );
+        // Initializing array of default teams
+        final ArrayList<String> teams = createTeams(currentGame);
 
-        player_list_listView.setAdapter(arrayAdapter);
+        // Creating player list
+        ArrayList<Client> player_list = new ArrayList<>(currentGame.getMax_players());
+        // Adding a player to the list
+        addPlayer(teams, player_list);
 
-        // Team list adapter
-        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, team_list );
+        final ListView lv1 = (ListView) findViewById(R.id.player_list);
+        lv1.setAdapter(new CustomListAdapter(this, player_list));
+        lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        team_list_listView.setAdapter(arrayAdapter1);
-
-        getProviderData();
-        player_list.add(name);
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                Object o = lv1.getItemAtPosition(position);
+                Client playerItem = (Client) o;
+                // Change team
+                changeTeam(playerItem, teams);
+                // Update the changes
+                ((BaseAdapter) lv1.getAdapter()).notifyDataSetChanged();
+                System.out.println(playerItem.getTeam());
+                // Get rid of toast later
+                Toast.makeText(GameLobby.this, "Changed Team For:" + " " + playerItem.getClientName(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         start_game_button = (Button) findViewById(R.id.start_button);
 
@@ -75,23 +89,55 @@ public class GameLobby extends AppCompatActivity {
 
     } // End onCreate
 
-    // Gets the currently signed-in user's profile data based on provider
-    private void getProviderData() {
+    private void changeTeam (Client player, ArrayList teamArray){
+        String currentTeam = player.getTeam();
+        int k = teamArray.indexOf(currentTeam); // looks for team
+        if(++k >= teamArray.size())
+            k = 0;
+        player.setTeam(teamArray.get(k).toString());
+//        System.out.println("Change Team: " + currentTeam);
+//        System.out.println("Player's team: " + player.getTeam());
+//        System.out.println(k);
+    }
+
+    // Creates the default number of teams
+    private ArrayList createTeams (Game currentGame){
+        ArrayList<String> team_array = new ArrayList<>();
+        int numOfTeams = currentGame.getTeamQuantity();
+
+        // Create teams based on number of teams
+        for(int i=1; i<=numOfTeams; i++)
+        {
+            team_array.add("Team" + i);
+        }
+        return team_array;
+    }
+
+    // Add a player to the game lobby list
+    private void addPlayer(ArrayList teamArray, ArrayList player_list) {
+        Client client = getProviderData(); // Get the client's info
+        if (index > teamArray.size())
+            index = 0;
+        client.setTeam(teamArray.get(index).toString()); //assign default team
+        index++;
+        player_list.add(client);
+    }
+
+    // Gets the currently signed-in user's profile data based on provider and return it
+    private Client getProviderData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Client client = new Client();
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
+
                 // Id of the provider (ex: google.com)
-                providerId = profile.getProviderId();
+                client.setClientId(profile.getProviderId());
 
-                // UID specific to the provider
-                uid = profile.getUid();
-
-                // Name, email address, and profile photo Url
-                name = profile.getDisplayName();
-                email = profile.getEmail();
-                photoUrl = profile.getPhotoUrl();
-            }
-
+                // Name tied to account
+                client.setClientName(profile.getDisplayName());
             }
         }
+        return client;
+    }
+
 } // End GameLobby
