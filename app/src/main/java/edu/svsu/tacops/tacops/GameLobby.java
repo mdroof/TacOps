@@ -91,8 +91,7 @@ public class GameLobby extends AppCompatActivity {
                 email = profile.getEmail();
                 photoUrl = profile.getPhotoUrl();
             }
+
+            }
         }
-    }
-
-
 } // End GameLobby

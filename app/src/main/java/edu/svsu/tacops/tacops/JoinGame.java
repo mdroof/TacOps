@@ -1,8 +1,13 @@
 package edu.svsu.tacops.tacops;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -13,6 +18,7 @@ import java.util.List;
 public class JoinGame extends AppCompatActivity {
 
     private ListView game_List_listView;
+    private Button join_game_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,16 @@ public class JoinGame extends AppCompatActivity {
 
         game_List_listView.setAdapter(arrayAdapter);
 
+        join_game_button = (Button) findViewById(R.id.join_game_button);
+        join_game_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent intent = new Intent(v.getContext(), GameScreen.class);
+                startActivity(intent);
+                }
+        });
+
 
     }
 }
+

@@ -1,67 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_game_screen2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.svsu.tacops.tacops.GameScreen">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <Button
-        android:text="@string/pause"
+        android:id="@+id/btnStartTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Timer"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvTimeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="54dp"
-        android:id="@+id/pause_btn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="41dp"
-        android:layout_marginStart="41dp" />
+        android:text="20:00"
+        style="@style/normalText"
+        android:textSize="14sp" />
+
+    <TextView
+        android:text="@string/intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myTextTitle"
+        android:textSize="14sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText" />
 
     <Button
-        android:text="@string/resume"
-        android:layout_width="wrap_content"
+        android:text="@string/addone"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pause_btn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="48dp"
-        android:layout_marginEnd="48dp"
-        android:id="@+id/resume_btn"
-        tools:ignore="RelativeOverlap" />
+        android:id="@+id/addButton" />
 
+    <Button
+        android:text="@string/subtractone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subtractButton" />
+
+    <Button
+        android:text="@string/reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/resetButton" />
     <TextView
-        android:text="@string/time"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
+        android:text="@string/intro1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
-        android:id="@+id/time_txt"
-        android:layout_below="@+id/alerts_txt"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/myTextTitle1"
+        android:textSize="14sp" />
 
-    <TextView
-        android:text="@string/Alerts"
-        android:textSize="50sp"
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:id="@+id/alerts_txt"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText1" />
 
-    <TextView
-        android:text="@string/score"
-        android:textSize="50sp"
-        android:layout_width="wrap_content"
+    <Button
+        android:text="@string/addone1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/score_txt"
-        android:layout_marginBottom="61dp"
-        android:layout_above="@+id/pause_btn"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/addButton1" />
 
-</RelativeLayout>
+    <Button
+        android:text="@string/subtractone1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subtractButton1" />
+
+    <Button
+        android:text="@string/reset1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/resetButton1" />
+
+</LinearLayout>
