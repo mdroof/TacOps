@@ -1,5 +1,6 @@
 package edu.svsu.tacops.tacops;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +21,9 @@ public class GameScreen extends AppCompatActivity {
     Button btn5;
     Button btn6;
     TextView textTitle;
-    EditText scoreText;
+    TextView scoreText;
     TextView textTitle1;
-    EditText scoreText1;
+    TextView scoreText1;
     int counter = 0;
     int counter1 = 0;
 
@@ -46,20 +47,20 @@ public class GameScreen extends AppCompatActivity {
         btn4 = (Button)findViewById(R.id.addButton1);
         btn5 = (Button)findViewById(R.id.subtractButton1);
         btn6 = (Button)findViewById(R.id.resetButton1);
-        scoreText = (EditText)findViewById(R.id.editText);
+        scoreText = (TextView)findViewById(R.id.scoreText);
         textTitle = (TextView)findViewById(R.id.myTextTitle);
-        scoreText1 = (EditText)findViewById(R.id.editText1);
+        scoreText1 = (TextView)findViewById(R.id.scoreText1);
         textTitle1 = (TextView)findViewById(R.id.myTextTitle1);
 
 // change font size of the text
         textTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         textTitle1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
 
-        getReferenceOfViews ();                         // get all views
-        setActionListeners ();                          // set action listerns
+        getReferenceOfViews ();
+        setActionListeners ();
 
-        totalTimeCountInMilliseconds = 20 * 60000;      // time count for 3 minutes = 180 seconds
-        timeBlinkInMilliseconds = 1 * 60000;            // blink starts at 1 minutes = 60 seconds
+        totalTimeCountInMilliseconds = 20 * 60000;
+        timeBlinkInMilliseconds = 1 * 60000;
     }
 
     private void setActionListeners() {

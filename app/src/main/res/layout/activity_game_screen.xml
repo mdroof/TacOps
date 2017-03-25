@@ -1,88 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
-    <Button
-        android:id="@+id/btnStartTime"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Timer"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:textSize="14sp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvTimeCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="20:00"
-        style="@style/normalText"
-        android:textSize="14sp" />
+        <Button
+            android:id="@+id/btnStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Timer"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:textSize="14sp" />
 
-    <TextView
-        android:text="@string/intro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/myTextTitle"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tvTimeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnStartTime"
+            android:text="20:00"
+            style="@style/normalText"
+            android:textSize="14sp" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText" />
+        <TextView
+            android:text="@string/intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTimeCount"
+            android:id="@+id/myTextTitle"
+            android:textSize="14sp" />
 
-    <Button
-        android:text="@string/addone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addButton" />
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/myTextTitle"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/scoreText" />
 
-    <Button
-        android:text="@string/subtractone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/subtractButton" />
+        <Button
+            android:text="@string/addone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scoreText"
+            android:id="@+id/addButton" />
 
-    <Button
-        android:text="@string/reset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/resetButton" />
-    <TextView
-        android:text="@string/intro1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/myTextTitle1"
-        android:textSize="14sp" />
+        <Button
+            android:text="@string/subtractone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addButton"
+            android:id="@+id/subtractButton" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText1" />
+        <Button
+            android:text="@string/reset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtractButton"
+            android:id="@+id/resetButton" />
 
-    <Button
-        android:text="@string/addone1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addButton1" />
+        <TextView
+            android:text="@string/intro1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resetButton"
+            android:id="@+id/myTextTitle1"
+            android:textSize="14sp" />
 
-    <Button
-        android:text="@string/subtractone1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/subtractButton1" />
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/myTextTitle1"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/scoreText1" />
 
-    <Button
-        android:text="@string/reset1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/resetButton1" />
+        <Button
+            android:text="@string/addone1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scoreText1"
+            android:id="@+id/addButton1" />
 
-</LinearLayout>
+        <Button
+            android:text="@string/subtractone1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addButton1"
+            android:id="@+id/subtractButton1" />
+
+        <Button
+            android:text="@string/reset1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtractButton1"
+            android:id="@+id/resetButton1" />
+    </RelativeLayout>
+
+</ScrollView>
