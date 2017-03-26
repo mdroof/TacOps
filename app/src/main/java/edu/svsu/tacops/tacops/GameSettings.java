@@ -78,14 +78,13 @@ public class GameSettings extends AppCompatActivity {
                 // Perform action on click
 
                 // Creates new game on firebase with desired settings
-                Game game = new Game();
-                game = createGame();
+                Game game = createGame();
                 Toast.makeText(v.getContext(), "Settings Saved",
                         Toast.LENGTH_SHORT).show();
 
                 // Transfer control to game lobby
                 Intent intent = new Intent(v.getContext(), GameLobby.class);
-                intent.putExtra("game", game);
+                intent.putExtra("game", game); // Pass game object
                 startActivity(intent);
 
             }
@@ -156,7 +155,7 @@ public class GameSettings extends AppCompatActivity {
         //Set score_limit
         Spinner scoreLimitSpinner = (Spinner)findViewById(R.id.score_limit_spinner);
         Integer score_limit = (Integer) scoreLimitSpinner.getSelectedItem();
-        game.setTime_limit(score_limit);
+        game.setScore_limit(score_limit);
 
         // Set max_players
         Spinner maxPlayersSpinner = (Spinner)findViewById(R.id.max_clients_spinner);

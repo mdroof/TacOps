@@ -4,13 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Capstone TacOps.iml" filepath="$PROJECT_DIR$/Capstone TacOps.iml" />
       <module fileurl="file://$PROJECT_DIR$/TacOps.iml" filepath="$PROJECT_DIR$/TacOps.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TacOps.iml" filepath="$PROJECT_DIR$/TacOps.iml" />
       <module fileurl="file://$PROJECT_DIR$/TacOpsCS.iml" filepath="$PROJECT_DIR$/TacOpsCS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ios/ios.iml" filepath="$PROJECT_DIR$/ios/ios.iml" />
       <module fileurl="file://$PROJECT_DIR$/ios/ios.iml" filepath="$PROJECT_DIR$/ios/ios.iml" />
     </modules>
   </component>

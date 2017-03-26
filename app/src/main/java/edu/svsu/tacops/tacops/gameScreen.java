@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.graphics.Color;
 
+import com.tacops.Game;
+
 public class GameScreen extends AppCompatActivity {
 
     Button btn1;
@@ -24,6 +26,7 @@ public class GameScreen extends AppCompatActivity {
     TextView scoreText;
     TextView textTitle1;
     TextView scoreText1;
+    TextView timer; // Added timer
     int counter = 0;
     int counter1 = 0;
 
@@ -47,19 +50,29 @@ public class GameScreen extends AppCompatActivity {
         btn4 = (Button)findViewById(R.id.addButton1);
         btn5 = (Button)findViewById(R.id.subtractButton1);
         btn6 = (Button)findViewById(R.id.resetButton1);
+        timer = (TextView)findViewById(R.id.tvTimeCount); // Added timer view id
         scoreText = (TextView)findViewById(R.id.scoreText);
         textTitle = (TextView)findViewById(R.id.myTextTitle);
         scoreText1 = (TextView)findViewById(R.id.scoreText1);
         textTitle1 = (TextView)findViewById(R.id.myTextTitle1);
 
-// change font size of the text
+        // change font size of the text
         textTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         textTitle1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        timer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        scoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        scoreText1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         getReferenceOfViews ();
         setActionListeners ();
 
-        totalTimeCountInMilliseconds = 20 * 60000;
+        // Getting the current game passed from GameSettings
+        Intent intent = getIntent();
+        Game currentGame = (Game)intent.getSerializableExtra("game");
+        Double timeLimit = currentGame.getTime_limit();
+        timer.setText(timeLimit.toString()); // Sets timer text to Game's time attribute
+
+        totalTimeCountInMilliseconds = timeLimit.longValue() * 60000;
         timeBlinkInMilliseconds = 1 * 60000;
     }
 

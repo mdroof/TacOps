@@ -47,14 +47,14 @@ public class GameLobby extends AppCompatActivity {
 
         // Getting the current game passed from GameSettings
         Intent intent = getIntent();
-        Game currentGame = (Game)intent.getSerializableExtra("game");
-        game_title_view.setText("Game ID: " + currentGame.getGame_id());
+        final Game game = (Game)intent.getSerializableExtra("game");
+        game_title_view.setText("Game ID: " + game.getGame_id());
 
         // Initializing array of default teams
-        final ArrayList<String> teams = createTeams(currentGame);
+        final ArrayList<String> teams = createTeams(game);
 
         // Creating player list
-        ArrayList<Client> player_list = new ArrayList<>(currentGame.getMax_players());
+        ArrayList<Client> player_list = new ArrayList<>(game.getMax_players());
         // Adding a player to the list
         addPlayer(teams, player_list);
 
@@ -83,6 +83,7 @@ public class GameLobby extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(v.getContext(), GameScreen.class);
+                intent.putExtra("game", game); // Pass game object
                 startActivity(intent);
             }
         });

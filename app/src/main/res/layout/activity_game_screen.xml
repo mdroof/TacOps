@@ -22,9 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnStartTime"
-        android:text="20:00"
         style="@style/normalText"
-        android:textSize="14sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:text="@string/intro"
@@ -34,19 +33,19 @@
         android:id="@+id/myTextTitle"
         android:textSize="14sp" />
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTextTitle"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText" />
+        android:id="@+id/scoreText" />
 
     <Button
         android:text="@string/addone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/scoreText"
         android:id="@+id/addButton" />
 
     <Button
@@ -71,19 +70,19 @@
         android:id="@+id/myTextTitle1"
         android:textSize="14sp" />
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTextTitle1"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText1" />
+        android:id="@+id/scoreText1" />
 
     <Button
         android:text="@string/addone1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/scoreText1"
         android:id="@+id/addButton1" />
 
     <Button
