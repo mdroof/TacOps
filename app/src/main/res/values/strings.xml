@@ -21,6 +21,12 @@
     <string name="subtractone1">-1</string>
     <string name="reset1">RESET SCORE</string>
 
+    //Join game dialog
+    <string name="JOIN">Join</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Password">Enter Password</string>
+    <string name="Capacity">Capacity</string>
+
     <string name="signed_in">Signed in</string>
     <string name="signing_in">Signing in…</string>
     <string name="signed_out">Signed out</string>
