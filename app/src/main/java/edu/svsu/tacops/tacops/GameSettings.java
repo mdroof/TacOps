@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,10 +36,10 @@ public class GameSettings extends AppCompatActivity {
 
     //GUI components
     Spinner mission_spinner;
-    EditText time_limit_edittext;
-    EditText score_limit_edittext;
-    EditText max_clients_edittext;
-    EditText team_quantity_edittext;
+    Spinner time_limit_spinner;
+    Spinner score_limit_spinner;
+    Spinner max_clients_spinner;
+    Spinner team_quantity_spinner;
     TextView description_textview;
     TextView missionDescription_textview;
     Button done_button;
@@ -52,7 +53,6 @@ public class GameSettings extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // Uncomment to re-write the default game settings
         // writeGame();
-
         setupDataListeners();
         //Set Title on Activity
         //setTitle("Game Settings");
@@ -68,10 +68,6 @@ public class GameSettings extends AppCompatActivity {
             }
         });
 
-        time_limit_edittext = (EditText) findViewById(R.id.time_limit_edittext);
-        score_limit_edittext = (EditText) findViewById(R.id.score_limit_edittext);
-        max_clients_edittext = (EditText) findViewById(R.id.max_clients_edittext);
-        team_quantity_edittext = (EditText) findViewById(R.id.team_quantity_edittext);
         description_textview = (TextView) findViewById(R.id.description_textview);
         missionDescription_textview = (TextView) findViewById(R.id.missionDescription_textview);
         done_button = (Button)findViewById(R.id.done_button);
@@ -101,16 +97,25 @@ public class GameSettings extends AppCompatActivity {
     private void writeGame(){
         Game game = new Game();
         Map<String, Game> missions = new HashMap<>();
+        Map<String, Integer> time_limits = new HashMap<>();
+        //ArrayList<Integer> timeLimitList = new ArrayList<>();
+        time_limits.put("option1", 5);
+        time_limits.put("option2", 10);
+        time_limits.put("option3", 15);
+        time_limits.put("option4", 20);
+        time_limits.put("option5", 30);
+        time_limits.put("option6", 60);
+        mDatabase.child("time_limits").setValue(time_limits);
 
         //Capture the Flag
         game.setDescription("Opposing teams attempt to capture their enemies flag while defending their own flag.");
         game.setGame_id("b08cc26548aee0bff438c252deea3ff7");
         game.setName("Capture the Flag");
         game.setScore_limit(3);
+        //game.setTimeLimitList(timeLimitList);
         game.setTime_limit(20.00);
         game.setMax_players(16);
         game.setTeamQuantity(2);
-        //missions.put("ctf", game);
         missions.put("Capture the Flag", game);
         mDatabase.child("missions").setValue(missions);
 
@@ -124,7 +129,6 @@ public class GameSettings extends AppCompatActivity {
         game2.setTime_limit(15.00);
         game2.setMax_players(16);
         game2.setTeamQuantity(2);
-        //missions.put("dom", game2);
         missions.put("Domination", game2);
         mDatabase.child("missions").setValue(missions);
 
@@ -133,6 +137,7 @@ public class GameSettings extends AppCompatActivity {
     // Sets new game settings, saves to database, and returns the game
     private Game createGame() {
         Game game = new Game();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //Set mission
         Spinner missionTypeSpinner = (Spinner)findViewById(R.id.mission_type_spinner);
@@ -144,23 +149,23 @@ public class GameSettings extends AppCompatActivity {
         game.setPassword(password.getText().toString());
 
         //Set time_limit
-        EditText timeLimit = (EditText)findViewById(R.id.time_limit_edittext);  // Get
-        Double time_limit = Double.parseDouble(timeLimit.getText().toString()); // Cast
-        game.setTime_limit(time_limit);                                         // Set
+        Spinner timeLimitSpinner = (Spinner)findViewById(R.id.time_limit_spinner);  // Get
+        Double time_limit = (Double) timeLimitSpinner.getSelectedItem();            // Cast
+        game.setTime_limit(time_limit);                                             // Set
 
-        // Set score_limit
-        EditText scoreLimit = (EditText)findViewById(R.id.score_limit_edittext);
-        Integer score_limit = Integer.parseInt(scoreLimit.getText().toString());
-        game.setScore_limit(score_limit);
+        //Set score_limit
+        Spinner scoreLimitSpinner = (Spinner)findViewById(R.id.score_limit_spinner);
+        Integer score_limit = (Integer) scoreLimitSpinner.getSelectedItem();
+        game.setTime_limit(score_limit);
 
         // Set max_players
-        EditText maxPlayers = (EditText)findViewById(R.id.max_clients_edittext);
-        int max_players = Integer.parseInt(maxPlayers.getText().toString());
-        game.setMax_players(max_players);
+        Spinner maxPlayersSpinner = (Spinner)findViewById(R.id.max_clients_spinner);
+        Integer max_players = (Integer) maxPlayersSpinner.getSelectedItem();
+        game.setTeamQuantity(max_players);
 
         // Set team_quanity
-        EditText teamQuantity = (EditText)findViewById(R.id.team_quantity_edittext);
-        Integer team_quantity = Integer.parseInt(teamQuantity.getText().toString());
+        Spinner teamQuantitySpinner = (Spinner)findViewById(R.id.team_quantity_spinner);
+        Integer team_quantity = (Integer) teamQuantitySpinner.getSelectedItem();
         game.setTeamQuantity(team_quantity);
 
         // Setting unique game_id
@@ -176,30 +181,26 @@ public class GameSettings extends AppCompatActivity {
         return game;
     }
 
+    //
     private void setupDataListeners(){
-        mission_spinner = (Spinner)findViewById(R.id.mission_type_spinner);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("missions");
 
-        //mDatabase.addValueEventListener(new ValueEventListener() {
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mission_spinner = (Spinner)findViewById(R.id.mission_type_spinner);
+        time_limit_spinner = (Spinner) findViewById(R.id.time_limit_spinner);
+        score_limit_spinner = (Spinner) findViewById(R.id.score_limit_spinner);
+        team_quantity_spinner = (Spinner) findViewById(R.id.team_quantity_spinner);
+        max_clients_spinner = (Spinner) findViewById(R.id.max_clients_spinner);
+
+        // Retrieve the mission types from Firebase
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> mission_types = new ArrayList<>();
-                String missionName1 = "";
-
-                /*for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
-                    String missionName = missionSnapshot.child("missions").getValue(String.class);
-                    mission_types.add(missionName);
-                }*/
+                List<String> mission_types = new ArrayList<>();
 
                 for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
-                    for(DataSnapshot typeSnapshot: missionSnapshot.getChildren()){
-                        //int z = 0;
-                         //missionName1 = missionSnapshot.child("name").getValue(String.class);
-                        String missionName = typeSnapshot.child("name").getValue(String.class);
+                        String missionName = missionSnapshot.child("name").getValue(String.class);
+                        Game mission = missionSnapshot.getValue(Game.class);
                         mission_types.add(missionName);
-                       System.out.println(missionName);
-                    }
-                    //System.out.println(missionName1);
                 }
                 // Populate the mission_spinner with mission_types
                 ArrayAdapter<String> missionAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
@@ -212,21 +213,89 @@ public class GameSettings extends AppCompatActivity {
 
             }
         });
+        //Creating and adding time limits
+        List<Double> time_limits = new ArrayList<>();
+        time_limits.add(5.00);
+        time_limits.add(10.00);
+        time_limits.add(15.00);
+        time_limits.add(20.00);
+        time_limits.add(30.00);
+        time_limits.add(60.00);
+
+        // Populate the time_limit_spinner with time limits
+        ArrayAdapter<Double> timeAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, time_limits);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_limit_spinner.setAdapter(timeAdapter);
+
+        //Creating and adding Max Clients
+        List<Integer> max_clients = new ArrayList<>();
+        max_clients.add(8);
+        max_clients.add(16);
+        max_clients.add(24);
+        max_clients.add(32);
+
+        // Populate the max_clients_spinner with max client quantites
+        ArrayAdapter<Integer> clientsAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, max_clients);
+        clientsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        max_clients_spinner.setAdapter(clientsAdapter);
+
+        //Creating and adding team quantities
+        List<Integer> team_quantities = new ArrayList<>();
+        team_quantities.add(2);
+        team_quantities.add(3);
+        team_quantities.add(4);
+
+        // Populate the team_quantity_spinner with team quantities
+        ArrayAdapter<Integer> teamAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, team_quantities);
+        teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        team_quantity_spinner.setAdapter(teamAdapter);
+
 
     } // End setupDataListeners
 
     // Retrieve Default settings from Firebase for selected mission
     private void retrieveMissionData(){
+
+        //Creating and adding score limit for CTF
+        final List<Integer> score_limit_ctf = new ArrayList<>();
+        score_limit_ctf.add(3);
+        score_limit_ctf.add(4);
+        score_limit_ctf.add(5);
+
+        //Creating and adding score limit for Domination
+        final List<Integer> score_limit_domination = new ArrayList<>();
+        score_limit_domination.add(300);
+        score_limit_domination.add(400);
+        score_limit_domination.add(500);
+
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String key = mission_spinner.getSelectedItem().toString();
-                Game game = dataSnapshot.child("missions").child(key).getValue(Game.class);
-                time_limit_edittext.setText(Double.toString(game.getTime_limit()));
-                time_limit_edittext.setText(Double.toString(game.getTime_limit()));
-                score_limit_edittext.setText(Integer.toString(game.getScore_limit()));
-                max_clients_edittext.setText(Integer.toString(game.getMax_players()));
-                team_quantity_edittext.setText(Integer.toString(game.getTeamQuantity()));
+                Game game = dataSnapshot.child(key).getValue(Game.class);
+                time_limit_spinner.setSelection(1);
+                if (key.equals("Capture the Flag") ) {
+                    System.out.println("Capture the Flag selected");
+
+                    // Populate the score_limit_spinner with score limits for CTF
+                    final ArrayAdapter<Integer> scoreAdapterCTF= new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, score_limit_ctf);
+                    scoreAdapterCTF.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    score_limit_spinner.setAdapter(scoreAdapterCTF);
+                }
+                else if (key.equals("Domination")) {
+                    System.out.println("Domination selected");
+
+                    // Populate the score_limit_spinner with score limits for Domination
+                    final ArrayAdapter<Integer> scoreAdapterDom= new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, score_limit_domination);
+                    scoreAdapterDom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    score_limit_spinner.setAdapter(scoreAdapterDom);
+                }
+                //time_limit_spinner.setText(Double.toString(game.getTime_limit()));
+               //score_limit_edittext.setText(Integer.toString(game.getScore_limit()));
+                max_clients_spinner.setSelection(1);
+                //max_clients_edittext.setText(Integer.toString(game.getMax_players()));
+                team_quantity_spinner.setSelection(0);
+                //team_quantity_edittext.setText(Integer.toString(game.getTeamQuantity()));
                 missionDescription_textview.setText(game.getDescription());
             }
 

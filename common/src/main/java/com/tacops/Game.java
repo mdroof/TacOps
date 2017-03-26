@@ -1,6 +1,7 @@
 package com.tacops;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +40,7 @@ public class Game implements Serializable{
         this.name = name;
         this.max_players = 16;
     }
+
     public String getDescription() {
         return description;
     }
