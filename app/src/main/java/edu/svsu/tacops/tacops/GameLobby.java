@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -33,6 +35,7 @@ public class GameLobby extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private TextView game_title_view;
     private Button start_game_button;
+    //private Game game;
     static int index = 0;
 
     @Override
@@ -41,19 +44,25 @@ public class GameLobby extends AppCompatActivity {
         setContentView(R.layout.activity_game_lobby);
 
         //Set Firebase reference
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("game_list");
 
         game_title_view = (TextView) findViewById(R.id.game_title);
 
         // Getting the current game passed from GameSettings
         Intent intent = getIntent();
         final Game game = (Game)intent.getSerializableExtra("game");
+       // game = (Game)intent.getSerializableExtra("game");
+        final Client player = (Client)intent.getSerializableExtra("player");
         game_title_view.setText("Game ID: " + game.getGame_id());
+
+        // Get particular game from firebase with correct id
+        //getGameData();
 
         // Initializing array of default teams
         final ArrayList<String> teams = createTeams(game);
 
         // Creating player list
+        System.out.println("Max players:"+ game.getMax_players());
         ArrayList<Client> player_list = new ArrayList<>(game.getMax_players());
         // Adding a player to the list
         addPlayer(teams, player_list);
@@ -101,6 +110,33 @@ public class GameLobby extends AppCompatActivity {
 //        System.out.println(k);
     }
 
+/*    public void getGameData(){
+        //System.out.println("Game id:" + game.getGame_id());
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot details : dataSnapshot.getChildren()) {
+                    String gameId = details.child("game_id").getValue(String.class);
+                    System.out.println("Game id: firebase " + gameId);
+
+                    // Looking for the game we want to join in the firebase game list
+                    System.out.println("Game id:" + game.getGame_id());
+                    if(gameId.equals(game.getGame_id()) )
+                    {
+                        // Pull that game's data
+                        game = details.getValue(Game.class);
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }*/
+
     // Creates the default number of teams
     private ArrayList createTeams (Game currentGame){
         ArrayList<String> team_array = new ArrayList<>();
@@ -117,6 +153,7 @@ public class GameLobby extends AppCompatActivity {
     // Add a player to the game lobby list
     private void addPlayer(ArrayList teamArray, ArrayList player_list) {
         Client client = getProviderData(); // Get the client's info
+        //Client client = getProviderData(); // Get the client's info
         if (index > teamArray.size())
             index = 0;
         client.setTeam(teamArray.get(index).toString()); //assign default team

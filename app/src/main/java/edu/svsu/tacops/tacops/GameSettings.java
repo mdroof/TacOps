@@ -160,7 +160,7 @@ public class GameSettings extends AppCompatActivity {
         // Set max_players
         Spinner maxPlayersSpinner = (Spinner)findViewById(R.id.max_clients_spinner);
         Integer max_players = (Integer) maxPlayersSpinner.getSelectedItem();
-        game.setTeamQuantity(max_players);
+        game.setMax_players(max_players);
 
         // Set team_quanity
         Spinner teamQuantitySpinner = (Spinner)findViewById(R.id.team_quantity_spinner);

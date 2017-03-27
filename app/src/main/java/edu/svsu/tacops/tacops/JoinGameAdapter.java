@@ -76,7 +76,6 @@ public class JoinGameAdapter extends RecyclerView.Adapter<JoinGameAdapter.MyView
                     //it is. If not, create the object.
                     dialog = dialog.getInstance();
 
-
                     dialog.setView(v);
 
                     dialog.setGameName(gameList.get((Integer.parseInt(gamePosition))).getName());

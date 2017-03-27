@@ -1,10 +1,12 @@
 package com.tacops;
 
+import java.io.Serializable;
+
 /**
  * Created by Erik on 2/20/2017.
  */
 
-public class Client{
+public class Client implements Serializable {
     //Class member data
     private String client_id;
     private String client_name;

@@ -1,9 +1,11 @@
 package edu.svsu.tacops.tacops;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,6 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.tacops.Client;
+import com.tacops.Game;
+
 public final class JoinGameDialog {
 
     private static volatile JoinGameDialog instance;
@@ -22,6 +30,7 @@ public final class JoinGameDialog {
     private String gameName;
     private String password;
     private String gameId;
+    Activity activity;
 
     private JoinGameDialog(){
 
@@ -37,16 +46,28 @@ public final class JoinGameDialog {
         Button joinBtn = (Button) promptView.findViewById(R.id.dialog_ok);
         Button cancelBtn = (Button) promptView.findViewById(R.id.dialog_cancel);
 
+
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (checkPassword(editText.getText().toString()) == false){
+                if (checkPassword(editText.getText().toString()) == true){
+                    //Add player to game and take to lobby.
+
+/*                    // Getting current Client's data
+                    Client player = getProviderData();
+
+                    Game game = new Game();
+                    game.setGame_id(gameId);
+                    System.out.println("Game Id: " + gameId);
+                    Intent intent = new Intent(v.getContext(), GameLobby.class);
+                    intent.putExtra("game", game); // Pass game object
+                    intent.putExtra("player", player); // Pass player object
+                    v.getContext().startActivity(intent);*/
+                }
+                else{
                     editText.setError("Incorrect Password");
                 }
-                //else
-                //Add player to game and take to lobby.
-
             }
         });
 
@@ -70,6 +91,22 @@ public final class JoinGameDialog {
 
         builder.setCustomTitle(title);
         builder.show();
+    }
+
+    private Client getProviderData() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Client client = new Client();
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+
+                // Id of the provider (ex: google.com)
+                client.setClientId(profile.getProviderId());
+
+                // Name tied to account
+                client.setClientName(profile.getDisplayName());
+            }
+        }
+        return client;
     }
 
     public static JoinGameDialog getInstance() {
