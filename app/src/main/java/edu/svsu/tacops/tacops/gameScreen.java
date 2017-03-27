@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.graphics.Color;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tacops.Game;
 
 public class GameScreen extends AppCompatActivity {
@@ -38,11 +40,26 @@ public class GameScreen extends AppCompatActivity {
     long timeBlinkInMilliseconds;           // start time of start blinking
     boolean blink = false;                  // controls the blinking .. on and off
 
+    private DatabaseReference mDatabase;    //Firebase Reference var
+    private AlertManager alert_manager;
+    private String game_uid;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
+
+        // Getting the current game passed from GameSettings
+        Intent intent = getIntent();
+        Game currentGame = (Game)intent.getSerializableExtra("game");
+        game_uid = (String)intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
+
+
+        alert_manager = AlertManager.getInstance(game_uid);             //Making new AlertManager global instance
+
+        //Set Firebase reference
+        mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid);
 
         btn1 = (Button)findViewById(R.id.addButton);
         btn2 = (Button)findViewById(R.id.subtractButton);
@@ -66,9 +83,6 @@ public class GameScreen extends AppCompatActivity {
         getReferenceOfViews ();
         setActionListeners ();
 
-        // Getting the current game passed from GameSettings
-        Intent intent = getIntent();
-        Game currentGame = (Game)intent.getSerializableExtra("game");
         Double timeLimit = currentGame.getTime_limit();
         timer.setText(timeLimit.toString()); // Sets timer text to Game's time attribute
 
@@ -133,33 +147,39 @@ public class GameScreen extends AppCompatActivity {
                     counter++;
                     scoreText.setText(Integer.toString(counter));
                     scoreText.setBackgroundColor(Color.CYAN);
+                    alert_manager.sendAlert("Team 1", "scored a point!");
                 }
                 if (view == btn2) {
                     counter--;
                     scoreText.setText(Integer.toString(counter));
                     scoreText.setBackgroundColor(Color.GREEN);
+                    alert_manager.sendAlert("Team 1", "lost a point!");
                 }
 
                 if (view == btn3) {
                     counter = 0;
                     scoreText.setText(Integer.toString(counter));
                     scoreText.setBackgroundColor(Color.RED);
+                    alert_manager.sendAlert("Team 1", "score was reset!");
                 }
                 if (view == btn4) {
                     counter1++;
                     scoreText1.setText(Integer.toString(counter1));
                     scoreText1.setBackgroundColor(Color.CYAN);
+                    alert_manager.sendAlert("Team 2", "scored a point!");
                 }
                 if (view == btn5) {
                     counter1--;
                     scoreText1.setText(Integer.toString(counter1));
                     scoreText1.setBackgroundColor(Color.GREEN);
+                    alert_manager.sendAlert("Team 2", "lost a point!");
                 }
 
                 if (view == btn6) {
                     counter1 = 0;
                     scoreText1.setText(Integer.toString(counter1));
                     scoreText1.setBackgroundColor(Color.RED);
+                    alert_manager.sendAlert("Team 2", "score was reset!");
                 }
             }
         });

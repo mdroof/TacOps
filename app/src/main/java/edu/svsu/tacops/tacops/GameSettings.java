@@ -43,6 +43,7 @@ public class GameSettings extends AppCompatActivity {
     TextView description_textview;
     TextView missionDescription_textview;
     Button done_button;
+    private String game_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class GameSettings extends AppCompatActivity {
 
                 // Transfer control to game lobby
                 Intent intent = new Intent(v.getContext(), GameLobby.class);
+                intent.putExtra("game_uid", game_uid);
                 intent.putExtra("game", game); // Pass game object
                 startActivity(intent);
 
@@ -171,6 +173,7 @@ public class GameSettings extends AppCompatActivity {
         String key = mDatabase.child("game_list").push().getKey();
         game.setGame_id(key);
         String game_id = game.getGame_id();
+        game_uid = game.getGame_id();   //Sets the game ID for Intent
 
         // Creating game and adding to game list with settings defined above
         // Does not overwrite the game_list

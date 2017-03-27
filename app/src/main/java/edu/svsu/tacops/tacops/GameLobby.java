@@ -37,19 +37,24 @@ public class GameLobby extends AppCompatActivity {
     private Button start_game_button;
     //private Game game;
     static int index = 0;
+    private String game_uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_lobby);
 
+        // Getting the current game passed from GameSettings
+        Intent intent = getIntent();
+        Game currentGame = (Game)intent.getSerializableExtra("game");
+        game_uid = (String)intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
+
         //Set Firebase reference
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("game_list");
+        mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid);
 
         game_title_view = (TextView) findViewById(R.id.game_title);
 
-        // Getting the current game passed from GameSettings
-        Intent intent = getIntent();
+        game_title_view.setText("Game ID: " + currentGame.getGame_id());
         final Game game = (Game)intent.getSerializableExtra("game");
        // game = (Game)intent.getSerializableExtra("game");
         final Client player = (Client)intent.getSerializableExtra("player");
@@ -92,6 +97,7 @@ public class GameLobby extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 Intent intent = new Intent(v.getContext(), GameScreen.class);
+                intent.putExtra("game_uid", game_uid);
                 intent.putExtra("game", game); // Pass game object
                 startActivity(intent);
             }
