@@ -142,7 +142,6 @@
             android:id="@+id/max_clients_spinner"
             android:ems="10"
             android:inputType="number"
-            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

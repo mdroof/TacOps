@@ -1,103 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/btnStartTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Timer"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tvTimeCount"
+        android:text="Timer"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tvScoreCount1"
+        android:text="Score1"
+        android:textSize="40sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnStartTime"
-        style="@style/normalText"
-        android:textSize="20sp" />
-
-    <TextView
-        android:text="@string/intro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="91dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="56dp"
         android:layout_below="@+id/tvTimeCount"
-        android:id="@+id/myTextTitle"
-        android:textSize="14sp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tvScoreCount2"
+        android:text="Score2"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/myTextTitle"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/scoreText" />
-
-    <Button
-        android:text="@string/addone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scoreText"
-        android:id="@+id/addButton" />
-
-    <Button
-        android:text="@string/subtractone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addButton"
-        android:id="@+id/subtractButton" />
-
-    <Button
-        android:text="@string/reset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subtractButton"
-        android:id="@+id/resetButton" />
+        android:layout_alignBaseline="@+id/tvScoreCount1"
+        android:layout_alignBottom="@+id/tvScoreCount1"
+        android:layout_alignLeft="@+id/tvScoreCount4"
+        android:layout_alignStart="@+id/tvScoreCount4" />
 
     <TextView
-        android:text="@string/intro1"
-        android:layout_width="match_parent"
+        android:id="@+id/tvScoreCount3"
+        android:text="Score3"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/resetButton"
-        android:id="@+id/myTextTitle1"
-        android:textSize="14sp" />
+        android:layout_alignBaseline="@+id/tvScoreCount4"
+        android:layout_alignBottom="@+id/tvScoreCount4"
+        android:layout_alignLeft="@+id/tvScoreCount1"
+        android:layout_alignStart="@+id/tvScoreCount1" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tvScoreCount4"
+        android:text="Score4"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/myTextTitle1"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/scoreText1" />
+        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="143dp"
+        android:layout_above="@+id/btnEnd"
+        android:layout_alignRight="@+id/btnEnd"
+        android:layout_alignEnd="@+id/btnEnd" />
 
     <Button
-        android:text="@string/addone1"
-        android:layout_width="match_parent"
+        android:id="@+id/btnStart"
+        android:text="Start"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scoreText1"
-        android:id="@+id/addButton1" />
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
-        android:text="@string/subtractone1"
-        android:layout_width="match_parent"
+        android:id="@+id/btnPause"
+        android:text="Pause"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/addButton1"
-        android:id="@+id/subtractButton1" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="@string/reset1"
-        android:layout_width="match_parent"
+        android:id="@+id/btnEnd"
+        android:text="End"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subtractButton1"
-        android:id="@+id/resetButton1" />
-        </RelativeLayout>
+        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-</ScrollView>
+    <TextView
+        android:id="@+id/tvTeam1"
+        android:text="Team1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvScoreCount2"
+        android:layout_alignLeft="@+id/tvScoreCount1"
+        android:layout_alignStart="@+id/tvScoreCount1" />
+
+    <TextView
+        android:id="@+id/tvTeam2"
+        android:text="Team2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvScoreCount2"
+        android:layout_alignLeft="@+id/tvScoreCount2"
+        android:layout_alignStart="@+id/tvScoreCount2" />
+
+    <TextView
+        android:id="@+id/tvTeam3"
+        android:text="Team3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvScoreCount3"
+        android:layout_alignLeft="@+id/tvScoreCount3"
+        android:layout_alignStart="@+id/tvScoreCount3" />
+
+    <TextView
+        android:id="@+id/tvTeam4"
+        android:text="Team4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvScoreCount4"
+        android:layout_alignLeft="@+id/tvScoreCount4"
+        android:layout_alignStart="@+id/tvScoreCount4" />
+
+</RelativeLayout>
