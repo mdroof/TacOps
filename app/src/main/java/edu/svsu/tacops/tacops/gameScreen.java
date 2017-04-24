@@ -67,16 +67,18 @@ public class GameScreen extends AppCompatActivity {
     private SoundManager sound_manager;
     private String game_uid;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState)  {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
 
         // Getting the current game passed from GameSettings
         Intent intent = getIntent();
-        Game currentGame = (Game)intent.getSerializableExtra("game");
-        game_uid = (String)intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
+        Game currentGame = (Game) intent.getSerializableExtra("game");
+        game_uid = (String) intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
 
         alert_manager = AlertManager.getInstance(game_uid);             //Making new AlertManager global instance
         sound_manager = SoundManager.getInstance(GameScreen.this);
@@ -88,16 +90,14 @@ public class GameScreen extends AppCompatActivity {
         buttonStartMission.setVisibility(View.INVISIBLE);
 
         // Hide buttons/views based on number of teams
-        if (currentGame.getTeamQuantity() == 2)
-        {
+        if (currentGame.getTeamQuantity() == 2) {
             tv3.setVisibility(View.INVISIBLE);
             v3.setVisibility(View.INVISIBLE);
             tv4.setVisibility(View.INVISIBLE);
             v4.setVisibility(View.INVISIBLE);
         }
 
-        if (currentGame.getTeamQuantity() == 3)
-        {
+        if (currentGame.getTeamQuantity() == 3) {
             tv4.setVisibility(View.INVISIBLE);
             v4.setVisibility(View.INVISIBLE);
         }
@@ -107,15 +107,16 @@ public class GameScreen extends AppCompatActivity {
         setActivity(this);
 
         // Changes the click listeners depending on which game mode
-        if(currentGame.getName().equals("Capture the Flag")) {
+        if (currentGame.getName().equals("Capture the Flag")) {
             setScoreListeners(currentGame);
-        } else if (currentGame.getName().equals("Domination")){
+        } else if (currentGame.getName().equals("Domination")) {
             setIncrementListeners();
         }
     }
 
     /**
      * Creates and deals with the score listeners on the Game Screen
+     *
      * @param currentGame
      */
     private void setScoreListeners(Game currentGame) {
@@ -128,6 +129,15 @@ public class GameScreen extends AppCompatActivity {
                 tv1.setText(Integer.toString(counter1));
                 //scoreText.setBackgroundColor(Color.RED);
                 alert_manager.sendAlert("Team 1", "Scored a point!");
+                if (counter1 == scoreLimit) {
+                    //End game
+                    tv1.setText("WIN");
+                    System.out.println("Score Limit Reached");
+                    countDownTimer.cancel();
+                    tv1.setClickable(false);
+                    tv2.setClickable(false);
+                    tv3.setClickable(false);
+                    tv4.setClickable(false);}
             }
         });
 
@@ -139,6 +149,15 @@ public class GameScreen extends AppCompatActivity {
                 tv2.setText(Integer.toString(counter2));
                 //scoreText.setBackgroundColor(Color.RED);
                 alert_manager.sendAlert("Team 2", "Scored a point!");
+                if (counter2 == scoreLimit) {
+                    //End game
+                    tv2.setText("WIN");
+                    System.out.println("Score Limit Reached");
+                    countDownTimer.cancel();
+                    tv1.setClickable(false);
+                    tv2.setClickable(false);
+                    tv3.setClickable(false);
+                    tv4.setClickable(false);}
             }
         });
 
@@ -150,6 +169,15 @@ public class GameScreen extends AppCompatActivity {
                 tv3.setText(Integer.toString(counter3));
                 //scoreText.setBackgroundColor(Color.RED);
                 alert_manager.sendAlert("Team 3", "Scored a point!");
+                if (counter3 == scoreLimit) {
+                    //End game
+                    tv3.setText("WIN");
+                    System.out.println("Score Limit Reached");
+                    countDownTimer.cancel();
+                    tv1.setClickable(false);
+                    tv2.setClickable(false);
+                    tv3.setClickable(false);
+                    tv4.setClickable(false);}
             }
         });
 
@@ -161,9 +189,51 @@ public class GameScreen extends AppCompatActivity {
                 tv4.setText(Integer.toString(counter4));
                 //scoreText.setBackgroundColor(Color.RED);
                 alert_manager.sendAlert("Team 4", "Scored a point!");
+                if (counter4 == scoreLimit) {
+                    //End game
+                    tv4.setText("WIN");
+                    System.out.println("Score Limit Reached");
+                    countDownTimer.cancel();
+                    tv1.setClickable(false);
+                    tv2.setClickable(false);
+                    tv3.setClickable(false);
+                    tv4.setClickable(false);}
             }
         });
+        buttonEndMission.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent intent = new Intent(v.getContext(), MainMenu.class);
+                startActivity(intent);
+                //End Game if score limit reached
+            }
+        });
+
+        if (counter1 == scoreLimit) {
+            //End game
+            tv1.setClickable(false);
+            tv2.setClickable(false);
+            tv3.setClickable(false);
+            tv4.setClickable(false);
+        } else if ((counter2 == scoreLimit)) {
+            tv1.setClickable(false);
+            tv2.setClickable(false);
+            tv3.setClickable(false);
+            tv4.setClickable(false);
+        } else if ((counter3 == scoreLimit)) {
+            tv1.setClickable(false);
+            tv2.setClickable(false);
+            tv3.setClickable(false);
+            tv4.setClickable(false);
+        } else if ((counter4 == scoreLimit)) {
+            tv1.setClickable(false);
+            tv2.setClickable(false);
+            tv3.setClickable(false);
+            tv4.setClickable(false);
+        }
+
     }
+
 
     private void setIncrementListeners() {
         tv1.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +261,7 @@ public class GameScreen extends AppCompatActivity {
                     toggle2 = true; //Domination mode
                     scoreTimer2();
                 }
+
             }
         });
 
