@@ -278,6 +278,8 @@ public class GameSettings extends AppCompatActivity {
 
         //Creating and adding score limit for Domination
         final List<Integer> score_limit_domination = new ArrayList<>();
+        score_limit_domination.add(10);
+        score_limit_domination.add(100);
         score_limit_domination.add(300);
         score_limit_domination.add(400);
         score_limit_domination.add(500);
