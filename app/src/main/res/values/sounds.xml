@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="music">
+
+    </string-array>
+    <string-array name="voiceover">
+        <item name="boost">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_boost_01.ogg</item>
+        <item name="win">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_mission_success_02.ogg</item>
+        <item name="loss">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_mission_fail_03.ogg</item>
+        <item name="draw">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_draw_01.ogg</item>
+        <item name="tied">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_tied_01.ogg</item>
+    </string-array>
+
+
+
+    <string name="boost">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_boost_01.ogg</string>
+    <string name="win">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_mission_success_02.ogg</string>
+    <string name="loss">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_mission_fail_03.ogg</string>
+    <string name="draw">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_draw_01.ogg</string>
+    <string name="tied">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_tied_01.ogg</string>
+
+    <string name="score_point">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_achieve_flag_02.ogg</string>
+    <string name="lose_point">gs://firebase-tacops.appspot.com/voiceover/mw3_us/US_1mc_enemy_has_flag_01.ogg</string>
+    <string name="music_start">gs://firebase-tacops.appspot.com/music/hz_mp_spawn_05.ogg</string>
+    <string name="music_win">gs://firebase-tacops.appspot.com/music/hz_mp_usvictory_1.ogg</string>
+    <string name="music_loss">gs://firebase-tacops.appspot.com/music/hz_mp_usdefeat_1.ogg</string>
+</resources>

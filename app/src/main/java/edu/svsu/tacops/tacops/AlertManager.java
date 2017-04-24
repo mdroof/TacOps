@@ -31,7 +31,7 @@ public class AlertManager {
         return instance;
     }
 
-    protected AlertManager(String game_uid) {
+    private AlertManager(String game_uid) {
         alert_log = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid + "/alert_log");
         mDatabase.setValue(alert_log);

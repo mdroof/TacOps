@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "449986085284-a93gsjfofrrmfbdevghumb5q02jo8vk4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.svsu.tacops.tacops",
+            "certificate_hash": "12f6bf9fa4e443c8dc80092be60dd4c2f5bab436"
+          }
+        },
+        {
           "client_id": "449986085284-c11rps9247hf7gp62oitslc18dovi82i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "edu.svsu.tacops.tacops",
-            "certificate_hash": "3771A8F4841934F8923982192D0F0394AD54D7F2"
+            "certificate_hash": "3771a8f4841934f8923982192d0f0394ad54d7f2"
           }
         },
         {
@@ -27,7 +35,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "edu.svsu.tacops.tacops",
-            "certificate_hash": "BEDCA77A869EEDDCE18F9A0800CE39683A9087C2"
+            "certificate_hash": "bedca77a869eeddce18f9a0800ce39683a9087c2"
           }
         },
         {
@@ -35,7 +43,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "edu.svsu.tacops.tacops",
-            "certificate_hash": "0B9C33159AF23610E7E7FF2DCC8F3A3E47FC5FF2"
+            "certificate_hash": "0b9c33159af23610e7e7ff2dcc8f3a3e47fc5ff2"
           }
         },
         {

@@ -22,6 +22,8 @@ import java.util.TimerTask;
 
 public class GameScreen extends AppCompatActivity {
 
+    private Activity activity;
+
     TextView tv1;
     TextView tv2;
     TextView tv3;
@@ -42,6 +44,7 @@ public class GameScreen extends AppCompatActivity {
 
     private DatabaseReference mDatabase;    //Firebase Reference var
     private AlertManager alert_manager;
+    private SoundManager sound_manager;
     private String game_uid;
 
     /** Called when the activity is first created. */
@@ -56,6 +59,7 @@ public class GameScreen extends AppCompatActivity {
         game_uid = (String)intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
 
         alert_manager = AlertManager.getInstance(game_uid);             //Making new AlertManager global instance
+        sound_manager = SoundManager.getInstance(GameScreen.this);
 
         //Set Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid);
@@ -71,6 +75,7 @@ public class GameScreen extends AppCompatActivity {
 //        textViewShowTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         setActionListeners(currentGame);
+        setActivity(this);
     }
 
     private void setActionListeners(Game currentGame) {
@@ -215,4 +220,13 @@ public class GameScreen extends AppCompatActivity {
         buttonPauseTime = (Button) findViewById(R.id.btnPause);
         buttonEndMission = (Button) findViewById(R.id.btnEnd);
     }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
 } // End GameScreen
