@@ -20,7 +20,7 @@
 
     <Button
         android:id="@+id/tvScoreCount4"
-        android:text="100"
+        android:text="0"
         android:textSize="35sp"
         android:padding="15dp"
         android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
 
     <Button
         android:id="@+id/tvScoreCount2"
-        android:text="100"
+        android:text="0"
         android:textSize="35sp"
         android:padding="15dp"
         android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
 
     <Button
         android:id="@+id/tvScoreCount1"
-        android:text="100"
+        android:text="0"
         android:textSize="35sp"
         android:padding="15dp"
         android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
 
     <Button
         android:id="@+id/tvScoreCount3"
-        android:text="100"
+        android:text="0"
         android:textSize="35sp"
         android:padding="15dp"
         android:layout_width="wrap_content"

@@ -20,21 +20,41 @@ import com.tacops.Game;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
+
 public class GameScreen extends AppCompatActivity {
 
     private Activity activity;
 
-    TextView tv1;
-    TextView tv2;
-    TextView tv3;
-    TextView tv4;
-    int counter1 = 0;
+    Button tv1; // Four scoring buttons on GameScreen
+    Button tv2;
+    Button tv3;
+    Button tv4;
+    TextView v1; // Four textviews displaying team name
+    TextView v2;
+    TextView v3;
+    TextView v4;
+    int count1 = 0; // These group of counters used for Domination
+    int count2 = 0;
+    int count3 = 0;
+    int count4 = 0;
+    int counter1 = 0; // These group of counters used for CTF
     int counter2 = 0;
     int counter3 = 0;
     int counter4 = 0;
+    int delay = 0; // delay for 0 sec.
+    final int period = 1000; // repeat every sec.
+    Timer timer1 = new Timer(); //Group of timers for Domination points
+    Timer timer2 = new Timer();
+    Timer timer3 = new Timer();
+    Timer timer4 = new Timer();
+    boolean toggle1 = false; // Group of booleans for Domination
+    boolean toggle2 = false;
+    boolean toggle3 = false;
+    boolean toggle4 = false;
 
-    Button buttonStartTime;                 // clicking this button will enable the score listeners
-    Button buttonPauseTime;                 // Yet to be implemented
+    Button buttonStartMission;              // Yet to be implemented
     Button buttonEndMission;                // Yet to be implemented
     TextView textViewShowTime;              // will show the time
     CountDownTimer countDownTimer;          // built in android class CountDownTimer
@@ -65,94 +85,236 @@ public class GameScreen extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid);
 
         getReferenceOfViews();
-        timerEvent(currentGame);// Starts and handles the timer
-        textViewShowTime.setTextAppearance(getApplicationContext(), R.style.normalText);
-        tv1.setTextAppearance(getApplicationContext(), R.style.normalText);
-        tv2.setTextAppearance(getApplicationContext(), R.style.normalText);
-        tv3.setTextAppearance(getApplicationContext(), R.style.normalText);
-        tv4.setTextAppearance(getApplicationContext(), R.style.normalText);
-        // change font size of the text
-//        textViewShowTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        buttonStartMission.setVisibility(View.INVISIBLE);
 
-        setActionListeners(currentGame);
+        // Hide buttons/views based on number of teams
+        if (currentGame.getTeamQuantity() == 2)
+        {
+            tv3.setVisibility(View.INVISIBLE);
+            v3.setVisibility(View.INVISIBLE);
+            tv4.setVisibility(View.INVISIBLE);
+            v4.setVisibility(View.INVISIBLE);
+        }
+
+        if (currentGame.getTeamQuantity() == 3)
+        {
+            tv4.setVisibility(View.INVISIBLE);
+            v4.setVisibility(View.INVISIBLE);
+        }
+
+        timerEvent(currentGame);// Starts and handles the timer
+
         setActivity(this);
+
+        // Changes the click listeners depending on which game mode
+        if(currentGame.getName().equals("Capture the Flag")) {
+            setScoreListeners(currentGame);
+        } else if (currentGame.getName().equals("Domination")){
+            setIncrementListeners();
+        }
     }
 
-    private void setActionListeners(Game currentGame) {
+    /**
+     * Creates and deals with the score listeners on the Game Screen
+     * @param currentGame
+     */
+    private void setScoreListeners(Game currentGame) {
         final int scoreLimit = currentGame.getScore_limit();
-        // Button listeners are enabled when the start(pause) button is pressed
-        buttonStartTime.setOnClickListener(new View.OnClickListener() {
+        tv1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //—set on click listeners on the buttons—–
-                tv1.setOnClickListener(this); // team1 +1
-                tv2.setOnClickListener(this); // team2 +1
-                tv3.setOnClickListener(this); // team3 +1
-                tv4.setOnClickListener(this); // team4 +1
+                counter1++;
+                tv1.setText(Integer.toString(counter1));
+                //scoreText.setBackgroundColor(Color.RED);
+                alert_manager.sendAlert("Team 1", "Scored a point!");
+            }
+        });
 
-                if (view == tv1) {
-                    counter1++;
-                    tv1.setText(Integer.toString(counter1));
-                    //scoreText.setBackgroundColor(Color.RED);
-                    alert_manager.sendAlert("Team 1", "Scored a point!");
-                }
-                if (view == tv2) {
-                    counter2++;
-                    tv2.setText(Integer.toString(counter2));
-                    //scoreText.setBackgroundColor(Color.BLUE);
-                    alert_manager.sendAlert("Team 2", "Scored a point!");
-                }
+        tv2.setOnClickListener(new View.OnClickListener() {
 
-                if (view == tv3) {
-                    counter3++;
-                    tv3.setText(Integer.toString(counter3));
-                    //scoreText.setBackgroundColor(Color.GREEN);
-                    alert_manager.sendAlert("Team 3", "Scored a point!");
-                }
-                if (view == tv4) {
-                    counter4++;
-                    tv4.setText(Integer.toString(counter4));
-                    //scoreText1.setBackgroundColor(Color.Yellow);
-                    alert_manager.sendAlert("Team 4", "Scored a point!");
-                }
+            @Override
+            public void onClick(View view) {
+                counter2++;
+                tv2.setText(Integer.toString(counter2));
+                //scoreText.setBackgroundColor(Color.RED);
+                alert_manager.sendAlert("Team 2", "Scored a point!");
+            }
+        });
 
-                //End Game if score limit reached
-                if (counter1 == scoreLimit) {
-                    //End game
-                    tv1.setText("WIN");
-                    System.out.println("Score Limit Reached");
-                }else if ((counter2 == scoreLimit) ){
-                    //End game
-                    tv2.setText("WIN");
-                    System.out.println("Score Limit Reached");
-                }else if ((counter3 == scoreLimit) ){
-                    //End Game
-                    tv3.setText("WIN");
-                    System.out.println("Score Limit Reached");
-                }else if ((counter4 == scoreLimit) ){
-                    //End Game
-                    tv4.setText("WIN");
-                    System.out.println("Score Limit Reached");
+        tv3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                counter3++;
+                tv3.setText(Integer.toString(counter3));
+                //scoreText.setBackgroundColor(Color.RED);
+                alert_manager.sendAlert("Team 3", "Scored a point!");
+            }
+        });
+
+        tv4.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                counter4++;
+                tv4.setText(Integer.toString(counter4));
+                //scoreText.setBackgroundColor(Color.RED);
+                alert_manager.sendAlert("Team 4", "Scored a point!");
+            }
+        });
+    }
+
+    private void setIncrementListeners() {
+        tv1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                if (toggle1) {
+                        pauseThread1();
+                        toggle1 = false;
+                } else {
+                    toggle1 = true; //Domination mode
+                    scoreTimer1();
+                }
+            }
+        });
+
+        tv2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                if (toggle2) {
+                    pauseThread2();
+                    toggle2 = false;
+                } else {
+                    toggle2 = true; //Domination mode
+                    scoreTimer2();
+                }
+            }
+        });
+
+        tv3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                if (toggle3) {
+                    pauseThread3();
+                    toggle3 = false;
+                } else {
+                    toggle3 = true; //Domination mode
+                    scoreTimer3();
+                }
+            }
+        });
+
+        tv4.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                if (toggle4) {
+                    pauseThread4();
+                    toggle4 = false;
+                } else {
+                    toggle4 = true; //Domination mode
+                    scoreTimer4();
                 }
             }
         });
     }
 
-    private void OnHold(){
-        // Code for onHold
-        int delay = 5000; // delay for 5 sec.
-        int period = 1000; // repeat every sec.
-        int count = 0;
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask()
+    // Allows the UI to update on the main thread - shows count increment on button
+    private void setText(final TextView text,final String value){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                text.setText(value);
+            }
+        });
+    }
+
+    private void scoreTimer1(){
+        timer1.scheduleAtFixedRate(new TimerTask()
         {
             public void run()
             {
-                // Your code
-                //count++;
+                while(toggle1) {
+                    try{
+                        count1++; //Score every sec
+                        setText(tv1, String.valueOf(count1));
+                        sleep(period);
+                        //if score has reached - end
+                    } catch(Exception e) {e.printStackTrace();}
+                }
             }
         }, delay, period);
+    }
+
+    private void scoreTimer2(){
+        timer2.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                while(toggle2) {
+                    try{
+                        count2++; //Score every sec
+                        setText(tv2, String.valueOf(count2));
+                        sleep(period);
+                        //if score has reached - end
+                    } catch(Exception e) {e.printStackTrace();}
+                }
+            }
+        }, delay, period);
+    }
+
+    private void scoreTimer3(){
+        timer3.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                while(toggle3) {
+                    try{
+                        count3++; //Score every sec
+                        setText(tv3, String.valueOf(count3));
+                        sleep(period);
+                        //if score has reached - end
+                    } catch(Exception e) {e.printStackTrace();}
+                }
+            }
+        }, delay, period);
+    }
+
+    private void scoreTimer4(){
+        timer4.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                while(toggle4) {
+                    try{
+                        count4++; //Score every sec
+                        setText(tv4, String.valueOf(count4));
+                        sleep(period);
+                        //if score has reached - end
+                    } catch(Exception e) {e.printStackTrace();}
+                }
+            }
+        }, delay, period);
+    }
+
+    public void pauseThread1() {
+        toggle1 = false;
+    }
+
+    public void pauseThread2() {
+        toggle2 = false;
+    }
+
+    public void pauseThread3() {
+        toggle3 = false;
+    }
+
+    public void pauseThread4() {
+        toggle4 = false;
     }
 
  /*   private void EndGameListener(){
@@ -163,8 +325,6 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println();
             }
         });    }*/
-
-
 
     /**
      * Runs the timer as soon as the GameScreen is created
@@ -212,12 +372,15 @@ public class GameScreen extends AppCompatActivity {
 
     private void getReferenceOfViews() {
         textViewShowTime = (TextView) findViewById(R.id.tvTimeCount);
-        tv1 = (TextView)findViewById(R.id.tvScoreCount1);
-        tv2 = (TextView) findViewById(R.id.tvScoreCount2);
-        tv3 = (TextView) findViewById(R.id.tvScoreCount3);
-        tv4 = (TextView) findViewById(R.id.tvScoreCount4);
-        buttonStartTime = (Button) findViewById(R.id.btnStart);
-       // buttonPauseTime = (Button) findViewById(R.id.btnPause);
+        tv1 = (Button)findViewById(R.id.tvScoreCount1);
+        tv2 = (Button) findViewById(R.id.tvScoreCount2);
+        tv3 = (Button) findViewById(R.id.tvScoreCount3);
+        tv4 = (Button) findViewById(R.id.tvScoreCount4);
+        v1 = (TextView) findViewById(R.id.tvTeam1);
+        v2 = (TextView) findViewById(R.id.tvTeam2);
+        v3 = (TextView) findViewById(R.id.tvTeam3);
+        v4 = (TextView) findViewById(R.id.tvTeam4);
+        buttonStartMission = (Button) findViewById(R.id.btnStart);
         buttonEndMission = (Button) findViewById(R.id.btnEnd);
     }
 
