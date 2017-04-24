@@ -13,10 +13,17 @@ import android.widget.EditText;
 import android.graphics.Color;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tacops.Game;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,6 +73,7 @@ public class GameScreen extends AppCompatActivity {
     private AlertManager alert_manager;
     private SoundManager sound_manager;
     private String game_uid;
+    private Game currentGame;
 
     /**
      * Called when the activity is first created.
@@ -77,11 +85,12 @@ public class GameScreen extends AppCompatActivity {
 
         // Getting the current game passed from GameSettings
         Intent intent = getIntent();
-        Game currentGame = (Game) intent.getSerializableExtra("game");
+        currentGame = (Game) intent.getSerializableExtra("game");
         game_uid = (String) intent.getSerializableExtra("game_uid");     //Setting the Game_uid for Firebase Reference
 
         alert_manager = AlertManager.getInstance(game_uid);             //Making new AlertManager global instance
         sound_manager = SoundManager.getInstance(GameScreen.this);
+        //sound_manager.setGameType(currentGame.getName());
 
         //Set Firebase reference
         mDatabase = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid);
@@ -112,6 +121,7 @@ public class GameScreen extends AppCompatActivity {
         } else if (currentGame.getName().equals("Domination")) {
             setIncrementListeners();
         }
+        transmitData();
     }
 
     /**
@@ -119,7 +129,7 @@ public class GameScreen extends AppCompatActivity {
      *
      * @param currentGame
      */
-    private void setScoreListeners(Game currentGame) {
+    private void setScoreListeners(final Game currentGame) {
         final int scoreLimit = currentGame.getScore_limit();
         tv1.setOnClickListener(new View.OnClickListener() {
 
@@ -128,7 +138,9 @@ public class GameScreen extends AppCompatActivity {
                 counter1++;
                 tv1.setText(Integer.toString(counter1));
                 //scoreText.setBackgroundColor(Color.RED);
+                sound_manager.parseAlertToSound("Team 1", "Scored a point!");
                 alert_manager.sendAlert("Team 1", "Scored a point!");
+                mDatabase.child("scores").child("Team 1").setValue(currentGame.getScores().get("Team 1") + 1);
                 if (counter1 == scoreLimit) {
                     //End game
                     tv1.setText("WIN");
@@ -137,7 +149,10 @@ public class GameScreen extends AppCompatActivity {
                     tv1.setClickable(false);
                     tv2.setClickable(false);
                     tv3.setClickable(false);
-                    tv4.setClickable(false);}
+                    tv4.setClickable(false);
+                    sound_manager.parseAlertToSound("Team 1", "won!");
+                    alert_manager.sendAlert("Team 1", "won!");
+                }
             }
         });
 
@@ -148,6 +163,7 @@ public class GameScreen extends AppCompatActivity {
                 counter2++;
                 tv2.setText(Integer.toString(counter2));
                 //scoreText.setBackgroundColor(Color.RED);
+                sound_manager.parseAlertToSound("Team 2", "Scored a point!");
                 alert_manager.sendAlert("Team 2", "Scored a point!");
                 if (counter2 == scoreLimit) {
                     //End game
@@ -157,7 +173,10 @@ public class GameScreen extends AppCompatActivity {
                     tv1.setClickable(false);
                     tv2.setClickable(false);
                     tv3.setClickable(false);
-                    tv4.setClickable(false);}
+                    tv4.setClickable(false);
+                    sound_manager.parseAlertToSound("Team 2", "won!");
+                    alert_manager.sendAlert("Team 2", "won!");
+                }
             }
         });
 
@@ -168,6 +187,7 @@ public class GameScreen extends AppCompatActivity {
                 counter3++;
                 tv3.setText(Integer.toString(counter3));
                 //scoreText.setBackgroundColor(Color.RED);
+                sound_manager.parseAlertToSound("Team 3", "Scored a point!");
                 alert_manager.sendAlert("Team 3", "Scored a point!");
                 if (counter3 == scoreLimit) {
                     //End game
@@ -177,7 +197,10 @@ public class GameScreen extends AppCompatActivity {
                     tv1.setClickable(false);
                     tv2.setClickable(false);
                     tv3.setClickable(false);
-                    tv4.setClickable(false);}
+                    tv4.setClickable(false);
+                    sound_manager.parseAlertToSound("Team 3", "won!");
+                    alert_manager.sendAlert("Team 3", "won!");
+                }
             }
         });
 
@@ -188,6 +211,7 @@ public class GameScreen extends AppCompatActivity {
                 counter4++;
                 tv4.setText(Integer.toString(counter4));
                 //scoreText.setBackgroundColor(Color.RED);
+                sound_manager.parseAlertToSound("Team 4", "Scored a point!");
                 alert_manager.sendAlert("Team 4", "Scored a point!");
                 if (counter4 == scoreLimit) {
                     //End game
@@ -197,7 +221,10 @@ public class GameScreen extends AppCompatActivity {
                     tv1.setClickable(false);
                     tv2.setClickable(false);
                     tv3.setClickable(false);
-                    tv4.setClickable(false);}
+                    tv4.setClickable(false);
+                    sound_manager.parseAlertToSound("Team 4", "won!");
+                    alert_manager.sendAlert("Team 4", "won!");
+                }
             }
         });
         buttonEndMission.setOnClickListener(new View.OnClickListener() {
@@ -435,6 +462,7 @@ public class GameScreen extends AppCompatActivity {
             public void onFinish() {
                 // this function will be called when the timeCount is finished
                 textViewShowTime.setText("Times up!");
+                sound_manager.parseAlertToSound("Game", "has ended!");
                 textViewShowTime.setVisibility(View.VISIBLE);
             }
 
@@ -453,6 +481,74 @@ public class GameScreen extends AppCompatActivity {
         v4 = (TextView) findViewById(R.id.tvTeam4);
         buttonStartMission = (Button) findViewById(R.id.btnStart);
         buttonEndMission = (Button) findViewById(R.id.btnEnd);
+    }
+
+    private void writeScores(){
+
+    }
+    /*public void transmitData(){
+        List<String> gameData;
+
+        ValueEventListener gameListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot details : dataSnapshot.getChildren()) {
+                    Game  game = new Game(details.child("name").getValue(String.class),
+                            details.child("game_id").getValue(String.class),
+                            details.child("max_players").getValue(Integer.class),
+                            details.child("password").getValue(String.class),
+                            details.child("teamQuantity").getValue(Integer.class));
+                    openGames.add(game);
+
+                }
+                //joinGameAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+
+        mDatabase.addValueEventListener(gameListener);
+
+    }*/
+    private void transmitData(){
+        DatabaseReference mDatabaseScores = FirebaseDatabase.getInstance().getReference("game_list/" + game_uid + "/scores");
+        // Retrieve the mission types from Firebase
+        mDatabaseScores.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Long> scores = (HashMap<String, Long>) dataSnapshot.getValue();
+                currentGame.setScores(scores);
+                //int val = scores.get("Team 1").intValue();
+                tv1.setText(scores.get("Team 1").toString());
+                //val = scores.get("Team 2").intValue();
+                tv2.setText(scores.get("Team 2").toString());
+                //val = scores.get("Team 3").intValue();
+                tv3.setText(scores.get("Team 3").toString());
+                //val = scores.get("Team 4").intValue();
+                tv4.setText(scores.get("Team 4").toString());
+
+            /*
+                for (DataSnapshot missionSnapshot: dataSnapshot.getChildren()) {
+                    String missionName = missionSnapshot.child("name").getValue(String.class);
+                    Game mission = missionSnapshot.getValue(Game.class);
+                    mission_types.add(missionName);
+                }
+
+
+                // Populate the mission_spinner with mission_types
+                ArrayAdapter<String> missionAdapter = new ArrayAdapter<>(GameSettings.this, android.R.layout.simple_spinner_item, mission_types);
+                missionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mission_spinner.setAdapter(missionAdapter);
+            */
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public Activity getActivity() {

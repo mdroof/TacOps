@@ -50,16 +50,104 @@ public class SoundManager implements MediaPlayer.OnPreparedListener{
 
         voiceOverPlayer = new MediaPlayer();
         voiceOverPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        fetchAudioUrlFromFirebase("draw");
+        fetchMusicUrlFromFirebase("music_start");
+        //fetchAudioUrlFromFirebase("ctf");
+        fetchAudioUrlFromFirebase("boost");
     }
 
     public void parseAlertToSound(String obj, String event){
-        switch(event){
-            //case: "Scored a point!"
+        String sound = "";
+        switch(obj){
+            case "Team 1":
+                switch(event){
+                    case "Scored a point!":
+                        sound = "friendly_score_point";
+                        break;
+                    case "won!":
+                        sound = "win";
+                        break;
+                }
+                break;
+            case "Team 2":
+                switch(event){
+                    case "Scored a point!":
+                        sound = "enemy_score_point";
+                        break;
+                    case "won!":
+                        sound = "loss";
+                        break;
+                }
+                break;
+            case "Team 3":
+                switch(event){
+                    case "Scored a point!":
+                        sound = "enemy_score_point";
+                        break;
+                    case "won!":
+                        sound = "loss";
+                        break;
+                }
+                break;
+            case "Team 4":
+                switch(event){
+                    case "Scored a point!":
+                        sound = "enemy_score_point";
+                        break;
+                    case "won!":
+                        sound = "loss";
+                        break;
+                }
+                break;
+            case "Game":
+                switch(event){
+                    case "has ended!":
+                        sound = "end";
+                        break;
+                }
+                break;
         }
+        fetchAudioUrlFromFirebase(sound);
     }
 
     private void fetchAudioUrlFromFirebase(String sound) {
+        //String[] androidStrings = context.getResources();
+
+        String sound_path = getStringResourceByName(sound);
+        final FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReferenceFromUrl(sound_path);
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                try {
+                    // Download url of file
+                    final String url = uri.toString();
+                    voiceOverPlayer.reset();
+                    //voiceOverPlayer.release();
+                    voiceOverPlayer.setDataSource(url);
+                    // wait for media player to get prepare
+                    voiceOverPlayer.setOnPreparedListener(SoundManager.this);
+                    voiceOverPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        public void onCompletion(MediaPlayer mp) {
+                            mp.reset();
+                            //mp.release();
+                        }
+                    });
+                    voiceOverPlayer.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        })  .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                        Log.i("TAG", e.getMessage());
+                    }
+                });
+    }
+
+    private void fetchMusicUrlFromFirebase(String sound) {
         //String[] androidStrings = context.getResources();
 
         String sound_path = getStringResourceByName(sound);
@@ -82,11 +170,11 @@ public class SoundManager implements MediaPlayer.OnPreparedListener{
 
             }
         })  .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                        Log.i("TAG", e.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("TAG", e.getMessage());
+            }
+        });
     }
 
     private String getStringResourceByName(String aString) {

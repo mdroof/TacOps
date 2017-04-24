@@ -2,6 +2,7 @@ package edu.svsu.tacops.tacops;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -25,9 +26,11 @@ import com.tacops.Game;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class GameSettings extends AppCompatActivity {
@@ -174,6 +177,15 @@ public class GameSettings extends AppCompatActivity {
         game.setGame_id(key);
         String game_id = game.getGame_id();
         game_uid = game.getGame_id();   //Sets the game ID for Intent
+
+        //Setting up initial scores and teams
+        Map<String, Long> temp = new HashMap<>();
+
+        temp.put("Team 1", 0L);
+        temp.put("Team 2", 0L);
+        temp.put("Team 3", 0L);
+        temp.put("Team 4", 0L);
+        game.setScores(temp);
 
         // Creating game and adding to game list with settings defined above
         // Does not overwrite the game_list

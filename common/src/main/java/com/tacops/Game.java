@@ -3,6 +3,7 @@ package com.tacops;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Topgun on 12/7/2016.
@@ -11,16 +12,18 @@ import java.util.List;
 public class Game implements Serializable{
 
     //Class member data
-   private String description;
-   private String name;
-   private String game_id;
-   private String password;
+    private String description;
+    private String name;
+    private String game_id;
+    private String password;
 
-   private int teamQuantity;
-   private int max_players;
-   private int score_limit;
-   private double time_limit;
-   private List<Alert> alert_log;
+    private int teamQuantity;
+    private int max_players;
+    private int score_limit;
+    private double time_limit;
+    private List<Alert> alert_log;
+    private String timer;
+    private Map<String, Long> scores;
 
     public Game() {
     }
@@ -106,6 +109,22 @@ public class Game implements Serializable{
 
     public void setTime_limit(double time_limit) {
         this.time_limit = time_limit;
+    }
+
+    public Map<String, Long> getScores() {
+        return scores;
+    }
+
+    public void setScores(Map<String, Long> scores) {
+        this.scores = scores;
+    }
+
+    public String getTimer() {
+        return timer;
+    }
+
+    public void setTimer(String timer) {
+        this.timer = timer;
     }
 
     public List<Alert> getAlert_log() {
