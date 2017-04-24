@@ -67,7 +67,8 @@ public class JoinGame extends AppCompatActivity  {
                     Game  game = new Game(details.child("name").getValue(String.class),
                             details.child("game_id").getValue(String.class),
                             details.child("max_players").getValue(Integer.class),
-                            details.child("password").getValue(String.class));
+                            details.child("password").getValue(String.class),
+                            details.child("teamQuantity").getValue(Integer.class));
                     openGames.add(game);
 
                 }

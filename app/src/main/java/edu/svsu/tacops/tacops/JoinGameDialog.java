@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,17 +23,27 @@ import com.google.firebase.auth.UserInfo;
 import com.tacops.Client;
 import com.tacops.Game;
 
+import static java.security.AccessController.getContext;
+
 public final class JoinGameDialog {
 
     private static volatile JoinGameDialog instance;
     private View view;
+    Game game;
 
     private String gameName;
     private String password;
     private String gameId;
     Activity activity;
 
+    public JoinGame joinGame;
+    public Context context;
+    public Activity joinGameActivity;
+
     private JoinGameDialog(){
+        joinGame = new JoinGame();
+        game = new Game();
+
 
     }
 
@@ -53,7 +64,12 @@ public final class JoinGameDialog {
 
                 if (checkPassword(editText.getText().toString()) == true){
                     //Add player to game and take to lobby.
-
+                    Intent gameLobbyIntent = new Intent(v.getContext(), GameLobby.class);
+                    game.setTeamQuantity(2);
+                    gameLobbyIntent.putExtra("game_uid", gameId);
+                    gameLobbyIntent.putExtra("game", game); // Pass game object
+                    v.getContext().startActivity(gameLobbyIntent);
+                    //joinGame.startActivity(new Intent(context, GameLobby.class));
 /*                    // Getting current Client's data
                     Client player = getProviderData();
 
@@ -92,6 +108,7 @@ public final class JoinGameDialog {
         builder.setCustomTitle(title);
         builder.show();
     }
+
 
     private Client getProviderData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -135,6 +152,8 @@ public final class JoinGameDialog {
     public void setGameId(String gameId) { this.gameId = gameId;}
 
     public void setGameName(String gameName) {this.gameName = gameName;}
+
+    public void setGame(Game game) {this.game = game;}
 
 
 

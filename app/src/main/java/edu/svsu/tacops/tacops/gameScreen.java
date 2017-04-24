@@ -217,7 +217,7 @@ public class GameScreen extends AppCompatActivity {
         tv3 = (TextView) findViewById(R.id.tvScoreCount3);
         tv4 = (TextView) findViewById(R.id.tvScoreCount4);
         buttonStartTime = (Button) findViewById(R.id.btnStart);
-        buttonPauseTime = (Button) findViewById(R.id.btnPause);
+       // buttonPauseTime = (Button) findViewById(R.id.btnPause);
         buttonEndMission = (Button) findViewById(R.id.btnEnd);
     }
 

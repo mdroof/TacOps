@@ -160,7 +160,7 @@ public class GameLobby extends AppCompatActivity {
     private void addPlayer(ArrayList teamArray, ArrayList player_list) {
         Client client = getProviderData(); // Get the client's info
         //Client client = getProviderData(); // Get the client's info
-        if (index > teamArray.size())
+        if (index > teamArray.size() - 1)
             index = 0;
         client.setTeam(teamArray.get(index).toString()); //assign default team
         index++;

@@ -36,12 +36,12 @@ public class Game implements Serializable{
         this.time_limit = time_limit;
     }
 
-    public Game(String name, String game_id, int max_players, String password){
+    public Game(String name, String game_id, int max_players, String password, int teamQuantity){
         this.name = name;
         this.max_players = max_players;
         this.password = password;
         this.game_id = game_id;
-
+        this.teamQuantity = teamQuantity;
     }
 
     public String getDescription() {

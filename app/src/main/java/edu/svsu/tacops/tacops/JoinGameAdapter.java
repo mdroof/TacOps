@@ -1,5 +1,6 @@
 package edu.svsu.tacops.tacops;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,8 @@ public class JoinGameAdapter extends RecyclerView.Adapter<JoinGameAdapter.MyView
         private Button join;
         private EditText edittext;
         private JoinGameDialog  dialog;
-
+        private Intent gameLobbyIntent;
+        private String id = " ";
         public MyViewHolder(View view) {
 
             super(view);
@@ -50,13 +52,14 @@ public class JoinGameAdapter extends RecyclerView.Adapter<JoinGameAdapter.MyView
             view.setOnClickListener(this);
             join.setOnClickListener(this);
 
+
         }
 
 
         @Override
         public void onClick(View v) {
             String filler;
-
+            Intent gameLobbyIntent = new Intent(v.getContext(), GameLobby.class);
             if(v.getId() == join.getId()){
 
                 //Once a Join button is clicked get the position and put the value in the
@@ -66,10 +69,12 @@ public class JoinGameAdapter extends RecyclerView.Adapter<JoinGameAdapter.MyView
                 //Using gamePosition, check the gameList to check if the game that was clicked
                 //has a password. If the game has a password, show the dialog box. Else, immediately
                 //take to the game lobby.
-                if(gameList.get((Integer.parseInt(gamePosition))).getPassword().equals(""))
-                    //filler is literally filler. The filler = "Filler" line can be deleted and replaced
-                    //with a line that takes the user to the game lobby screen.
-                    filler = "Filler";
+                if(gameList.get((Integer.parseInt(gamePosition))).getPassword().equals("")) {
+
+                    gameLobbyIntent.putExtra("game_uid",gameList.get((Integer.parseInt(gamePosition))).getGame_id());
+                    gameLobbyIntent.putExtra("game", gameList.get((Integer.parseInt(gamePosition)))); // Pass game object
+                    v.getContext().startActivity(gameLobbyIntent);
+                }
                 else {
 
                     //Checks if an instance of JoinGameDialog is created and get the instance if
@@ -77,7 +82,7 @@ public class JoinGameAdapter extends RecyclerView.Adapter<JoinGameAdapter.MyView
                     dialog = dialog.getInstance();
 
                     dialog.setView(v);
-
+                    dialog.setGame(gameList.get((Integer.parseInt(gamePosition))));
                     dialog.setGameName(gameList.get((Integer.parseInt(gamePosition))).getName());
                     dialog.setGameId(gameList.get((Integer.parseInt(gamePosition))).getGame_id());
                     dialog.setPassword(gameList.get((Integer.parseInt(gamePosition))).getPassword());
